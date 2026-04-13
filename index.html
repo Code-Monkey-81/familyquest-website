@@ -1,0 +1,2943 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FamilyQuest – Bildschirmzeit verdienen, Verantwortung leben</title>
+    <meta
+      name="description"
+      content="FamilyQuest ist die Familienapp, bei der Kinder Bildschirmzeit durch echte Aufgaben verdienen. Mehr Verantwortung, mehr Zusammenhalt – weniger Stress."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      *,
+      *::before,
+      *::after {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      :root {
+        --purple: #d4892a;
+        --purple-l: #f0b574;
+        --purple-d: #9b6020;
+        --green: #22c55e;
+        --amber: #f59e0b;
+        --red: #ef4444;
+        --bg: #fafaf9;
+        --surface: #ffffff;
+        --text: #1a1a1a;
+        --muted: #6b7280;
+        --border: #e5e7eb;
+        --radius: 16px;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        font-family: "Inter", sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        line-height: 1.65;
+        font-size: 16px;
+      }
+
+      /* ── UTILITY ─────────────────────────────────────────────── */
+      .container {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 0 24px;
+      }
+      .badge {
+        display: inline-block;
+        background: #fef3e2;
+        color: var(--purple);
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        padding: 4px 12px;
+        border-radius: 999px;
+        margin-bottom: 14px;
+      }
+      .section {
+        padding: 96px 0;
+      }
+      .section-title {
+        font-size: clamp(28px, 4vw, 42px);
+        font-weight: 900;
+        line-height: 1.15;
+        margin-bottom: 16px;
+        letter-spacing: -0.02em;
+      }
+      .section-sub {
+        font-size: 18px;
+        color: var(--muted);
+        max-width: 600px;
+        line-height: 1.7;
+      }
+      a {
+        color: var(--purple);
+        text-decoration: none;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+
+      /* ── HEADER ──────────────────────────────────────────────── */
+      header {
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        background: rgba(255, 255, 255, 0.92);
+        backdrop-filter: blur(12px);
+        border-bottom: 1px solid var(--border);
+      }
+      .nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 16px 0;
+      }
+      .nav-logo {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-weight: 900;
+        font-size: 24px;
+        color: var(--text);
+        text-decoration: none;
+        letter-spacing: -.02em;
+      }
+      .nav-logo-icon {
+        width: 140px;
+        height: 48px;
+        background: transparent;
+        border-radius: 13px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+      }
+      .nav-links {
+        display: flex;
+        gap: 32px;
+        list-style: none;
+        align-items: center;
+      }
+      .nav-links a {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--muted);
+        text-decoration: none;
+        transition: color 0.2s;
+      }
+      .nav-links a:hover { color: var(--purple); }
+
+      /* Dropdown Rechtliches */
+      .nav-dropdown { position: relative; }
+      .nav-dropdown-btn {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--muted);
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        font-family: inherit;
+        transition: color .2s;
+      }
+      .nav-dropdown-btn:hover { color: var(--purple); }
+      .nav-dropdown-btn::after {
+        content: '›';
+        display: inline-block;
+        transform: rotate(90deg);
+        font-size: 16px;
+        transition: transform .2s;
+        line-height: 1;
+      }
+      .nav-dropdown.open .nav-dropdown-btn::after { transform: rotate(-90deg); }
+      .nav-dropdown-menu {
+        display: none;
+        position: absolute;
+        top: calc(100% + 4px);
+        right: 0;
+        background: #fff;
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 8px;
+        min-width: 200px;
+        box-shadow: 0 12px 40px rgba(0,0,0,.10), 0 2px 8px rgba(0,0,0,.06);
+        z-index: 200;
+      }
+      .nav-dropdown.open .nav-dropdown-menu { display: block; }
+      .nav-dropdown-menu a {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 14px;
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--text);
+        text-decoration: none;
+        border-radius: 8px;
+        transition: background .15s;
+      }
+      .nav-dropdown-menu a:hover { background: #fef9f0; color: var(--purple); }
+      .nav-dropdown-menu a span { font-size: 16px; }
+
+      .nav-cta {
+        background: var(--purple);
+        color: #fff !important;
+        padding: 10px 22px;
+        border-radius: 10px;
+        font-size: 14px;
+        font-weight: 700;
+        text-decoration: none;
+        transition: background 0.2s;
+      }
+      .nav-cta:hover { background: var(--purple-d); text-decoration: none; }
+
+      /* ── MODALS (Rechtliches) ──────────────────────────────── */
+      .legal-modal {
+        display: none;
+        position: fixed;
+        inset: 0;
+        z-index: 500;
+        background: rgba(15,10,30,.6);
+        backdrop-filter: blur(6px);
+        align-items: flex-start;
+        justify-content: center;
+        padding: 40px 20px;
+        overflow-y: auto;
+      }
+      .legal-modal.open { display: flex; }
+      .legal-modal-inner {
+        background: #fff;
+        border-radius: 24px;
+        max-width: 780px;
+        width: 100%;
+        overflow: hidden;
+        box-shadow: 0 32px 80px rgba(0,0,0,.25);
+        margin: auto;
+      }
+      .legal-modal-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 24px 32px;
+        border-bottom: 1px solid var(--border);
+        position: sticky;
+        top: 0;
+        background: #fff;
+        z-index: 1;
+      }
+      .legal-modal-header h2 { font-size: 20px; font-weight: 900; }
+      .legal-modal-close {
+        width: 36px; height: 36px;
+        border-radius: 50%;
+        border: none;
+        background: var(--bg);
+        font-size: 18px;
+        cursor: pointer;
+        display: flex; align-items: center; justify-content: center;
+        color: var(--muted);
+        transition: background .15s;
+      }
+      .legal-modal-close:hover { background: #fef3e2; color: var(--purple); }
+      .legal-modal-body { padding: 32px; max-height: 72vh; overflow-y: auto; }
+      .legal-modal-body::-webkit-scrollbar { width: 4px; }
+      .legal-modal-body::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+      .legal-section {
+        margin-bottom: 28px;
+      }
+      .legal-section h3 {
+        font-size: 15px;
+        font-weight: 800;
+        color: var(--purple);
+        text-transform: uppercase;
+        letter-spacing: .06em;
+        margin-bottom: 12px;
+        padding-bottom: 8px;
+        border-bottom: 2px solid #fef3e2;
+      }
+      .legal-block {
+        background: var(--bg);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 16px 18px;
+        margin-bottom: 10px;
+        font-size: 14px;
+        color: #444;
+        line-height: 1.75;
+      }
+      .legal-block h4 { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+      .legal-law {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: #f3e8ff;
+        border: 1px solid #e9d5ff;
+        border-radius: 6px;
+        padding: 3px 8px;
+        margin: 4px 4px 4px 0;
+        font-size: 11px;
+        font-weight: 700;
+        color: var(--purple-d);
+      }
+      .legal-intro {
+        font-size: 13px;
+        color: var(--muted);
+        text-align: center;
+        margin-bottom: 28px;
+        padding: 12px;
+        background: var(--bg);
+        border-radius: 10px;
+      }
+      .legal-bullet { display: flex; gap: 8px; margin-bottom: 6px; font-size: 14px; color: #444; line-height: 1.65; }
+      .legal-bullet::before { content: '›'; color: var(--purple); font-weight: 700; flex-shrink: 0; }
+
+      /* ── HERO ────────────────────────────────────────────────── */
+      .hero {
+        background: linear-gradient(
+          160deg,
+          #fef9f0 0%,
+          #fefce8 50%,
+          #f0fdf4 100%
+        );
+        padding: 20px 0 24px;
+        overflow: hidden;
+        position: relative;
+      }
+      .hero::before {
+        content: "";
+        position: absolute;
+        top: -80px;
+        right: -80px;
+        width: 500px;
+        height: 500px;
+        background: radial-gradient(
+          circle,
+          rgba(212, 137, 42, 0.08) 0%,
+          transparent 70%
+        );
+        pointer-events: none;
+      }
+      .hero-inner {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 64px;
+        align-items: center;
+      }
+      .hero-badge {
+        background: linear-gradient(160deg, #fef5e4 0%, #fcd5a0 60%, #d4892a 100%);
+        color: #3b0764;
+        font-size: 15px;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        padding: 10px 24px;
+        border-radius: 999px;
+        display: inline-block;
+        margin-bottom: 20px;
+        box-shadow:
+          0 2px 0 #9b6020,
+          0 4px 0 #7a4a18,
+          0 6px 0 rgba(122,74,24,0.5),
+          0 8px 16px rgba(212,137,42,0.35);
+        transform: translateY(0);
+        transition: transform .15s, box-shadow .15s;
+        cursor: default;
+      }
+      .hero-badge:hover {
+        transform: translateY(2px);
+        box-shadow:
+          0 1px 0 #9b6020,
+          0 2px 0 #7a4a18,
+          0 4px 10px rgba(212,137,42,0.3);
+      }
+      .hero h1 {
+        font-size: clamp(36px, 5vw, 58px);
+        font-weight: 900;
+        letter-spacing: -0.03em;
+        line-height: 1.1;
+        margin-bottom: 22px;
+      }
+      .hero h1 em {
+        font-style: normal;
+        color: var(--purple);
+      }
+      .hero-sub {
+        font-size: 18px;
+        color: var(--muted);
+        line-height: 1.75;
+        margin-bottom: 36px;
+        max-width: 520px;
+      }
+      .hero-actions {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+      .btn-primary {
+        background: var(--purple);
+        color: #fff;
+        padding: 14px 28px;
+        border-radius: var(--radius);
+        font-weight: 700;
+        font-size: 16px;
+        text-decoration: none;
+        transition:
+          transform 0.2s,
+          box-shadow 0.2s;
+        box-shadow: 0 4px 20px rgba(212, 137, 42, 0.25);
+      }
+      .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 28px rgba(212, 137, 42, 0.35);
+        text-decoration: none;
+        color: #fff;
+      }
+      .btn-ghost {
+        border: 2px solid var(--border);
+        background: #fff;
+        color: var(--text);
+        padding: 14px 28px;
+        border-radius: var(--radius);
+        font-weight: 700;
+        font-size: 16px;
+        text-decoration: none;
+        transition: border-color 0.2s;
+      }
+      .btn-ghost:hover {
+        border-color: var(--purple);
+        color: var(--purple);
+        text-decoration: none;
+      }
+
+      .hero-mockup {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+      }
+      .phone-frame {
+        width: 260px;
+        background: #1a1a2e;
+        border-radius: 36px;
+        padding: 12px;
+        box-shadow:
+          0 24px 80px rgba(0, 0, 0, 0.18),
+          0 0 0 1px rgba(255, 255, 255, 0.1);
+        position: relative;
+      }
+      .phone-screen {
+        background: linear-gradient(135deg, #2d1b69, #1a1035);
+        border-radius: 28px;
+        padding: 20px 16px;
+        min-height: 420px;
+        color: #fff;
+        overflow: hidden;
+      }
+      .phone-notch {
+        width: 80px;
+        height: 6px;
+        background: rgba(255, 255, 255, 0.15);
+        border-radius: 3px;
+        margin: 0 auto 16px;
+      }
+      .phone-header {
+        font-size: 11px;
+        font-weight: 700;
+        color: rgba(255, 255, 255, 0.5);
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        margin-bottom: 20px;
+        text-align: center;
+      }
+      .phone-child-card {
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        border-radius: 14px;
+        padding: 14px;
+        margin-bottom: 10px;
+      }
+      .phone-child-name {
+        font-size: 13px;
+        font-weight: 700;
+        margin-bottom: 6px;
+      }
+      .phone-xp-bar {
+        height: 6px;
+        background: rgba(255, 255, 255, 0.15);
+        border-radius: 3px;
+        margin-bottom: 10px;
+        overflow: hidden;
+      }
+      .phone-xp-fill {
+        height: 100%;
+        background: linear-gradient(90deg, #f0b574, #d4892a);
+        border-radius: 3px;
+      }
+      .phone-task {
+        background: rgba(255, 255, 255, 0.06);
+        border-radius: 10px;
+        padding: 10px 12px;
+        font-size: 12px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 6px;
+      }
+      .phone-task-reward {
+        color: #86efac;
+        font-weight: 700;
+        font-size: 11px;
+      }
+      .phone-timer {
+        background: linear-gradient(
+          135deg,
+          rgba(212, 137, 42, 0.4),
+          rgba(240, 181, 116, 0.2)
+        );
+        border: 1px solid rgba(240, 181, 116, 0.3);
+        border-radius: 14px;
+        padding: 16px;
+        text-align: center;
+        margin-top: 12px;
+      }
+      .phone-timer-label {
+        font-size: 10px;
+        color: rgba(255, 255, 255, 0.5);
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        margin-bottom: 4px;
+      }
+      .phone-timer-value {
+        font-size: 24px;
+        font-weight: 900;
+        color: #fcd5a0;
+      }
+
+      /* ── STATS BAR ───────────────────────────────────────────── */
+      .stats-bar {
+        background: var(--surface);
+        border-top: 1px solid var(--border);
+        border-bottom: 1px solid var(--border);
+        padding: 32px 0;
+      }
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 32px;
+        text-align: center;
+      }
+      .stat-number {
+        font-size: 36px;
+        font-weight: 900;
+        color: var(--purple);
+        letter-spacing: -0.02em;
+        line-height: 1;
+        margin-bottom: 6px;
+      }
+      .stat-label {
+        font-size: 13px;
+        color: var(--muted);
+        font-weight: 500;
+      }
+      .stat-source {
+        font-size: 11px;
+        color: #aaa;
+        margin-top: 4px;
+      }
+
+      /* ── LIVE STATS ─────────────────────────────────────────── */
+      .live-stats-bar {
+        background: #1a1a2e;
+        padding: 40px 0;
+        border-top: 3px solid var(--purple);
+      }
+      .live-stats-header {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 12px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: .1em;
+        color: var(--purple-l);
+        margin-bottom: 28px;
+        justify-content: center;
+      }
+      .live-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #22c55e;
+        box-shadow: 0 0 8px #22c55e;
+        animation: livepulse 2s ease-in-out infinite;
+      }
+      @keyframes livepulse {
+        0%, 100% { opacity: 1; box-shadow: 0 0 8px #22c55e; }
+        50%       { opacity: .4; box-shadow: 0 0 2px #22c55e; }
+      }
+      .live-stats-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 24px;
+        text-align: center;
+      }
+      .live-stat {
+        background: rgba(255,255,255,.04);
+        border: 1px solid rgba(255,255,255,.08);
+        border-radius: 16px;
+        padding: 24px 16px;
+      }
+      .live-stat-number {
+        font-size: 42px;
+        font-weight: 900;
+        color: var(--purple);
+        letter-spacing: -0.03em;
+        line-height: 1;
+        margin-bottom: 8px;
+        transition: all .4s ease;
+      }
+      .live-stat-label {
+        font-size: 12px;
+        color: rgba(255,255,255,.5);
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: .06em;
+      }
+      .live-top-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        text-align: left;
+      }
+      .live-top-list li {
+        font-size: 13px;
+        color: rgba(255,255,255,.75);
+        padding: 4px 0;
+        border-bottom: 1px solid rgba(255,255,255,.06);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .live-top-list li:last-child { border-bottom: none; }
+      .live-top-rank {
+        font-size: 10px;
+        font-weight: 800;
+        color: var(--purple);
+        min-width: 18px;
+      }
+      @media (max-width: 768px) {
+        .live-stats-grid { grid-template-columns: 1fr 1fr; }
+      }
+      @media (max-width: 480px) {
+        .live-stats-grid { grid-template-columns: 1fr; }
+      }
+
+      /* ── PROBLEM ─────────────────────────────────────────────── */
+      .problem {
+        background: var(--surface);
+      }
+      .problem-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 48px;
+        align-items: start;
+        margin-top: 56px;
+      }
+      .problem-block {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 28px;
+        box-shadow: 0 2px 0 #d1d5db, 0 4px 0 #e5e7eb, 0 6px 16px rgba(0,0,0,.06);
+        transform: translateY(0);
+        transition: transform .2s, box-shadow .2s;
+      }
+      .problem-block:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 0 #fcd5a0, 0 8px 0 #fde8c8, 0 12px 28px rgba(212,137,42,.12);
+      }
+      .problem-block-icon {
+        font-size: 32px;
+        margin-bottom: 14px;
+      }
+      .problem-block h3 {
+        font-size: 18px;
+        font-weight: 800;
+        margin-bottom: 10px;
+      }
+      .problem-block p {
+        font-size: 14px;
+        color: var(--muted);
+        line-height: 1.7;
+      }
+      .problem-block cite {
+        display: block;
+        font-size: 11px;
+        color: #bbb;
+        margin-top: 10px;
+        font-style: italic;
+      }
+
+      /* ── ÜBER UNS ─────────────────────────────────────────────── */
+      .about {
+        background: linear-gradient(170deg, #fef9f0 0%, var(--bg) 100%);
+      }
+      .about-inner {
+        display: grid;
+        grid-template-columns: 2fr 3fr;
+        gap: 72px;
+        align-items: start;
+      }
+      .about-portrait {
+        position: sticky;
+        top: 100px;
+      }
+      .portrait-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 24px;
+        padding: 32px;
+        box-shadow: 0 4px 0 #d1d5db, 0 8px 0 #e5e7eb, 0 12px 32px rgba(0,0,0,.07);
+        text-align: center;
+      }
+      .portrait-avatar {
+        width: 140px;
+        height: 140px;
+        background: linear-gradient(135deg, #d4892a, #f0b574);
+        border-radius: 50%;
+        margin: 0 auto 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 42px;
+        overflow: hidden;
+      }
+      .portrait-name {
+        font-weight: 800;
+        font-size: 18px;
+        margin-bottom: 4px;
+      }
+      .portrait-role {
+        font-size: 13px;
+        color: var(--muted);
+        margin-bottom: 16px;
+      }
+      .portrait-tag {
+        background: #fef3e2;
+        color: var(--purple);
+        font-size: 12px;
+        font-weight: 600;
+        padding: 4px 12px;
+        border-radius: 999px;
+        display: inline-block;
+      }
+      .about-story blockquote {
+        border-left: 4px solid var(--purple);
+        background: #fef3e2;
+        border-radius: 0 14px 14px 0;
+        padding: 20px 24px;
+        margin: 28px 0;
+        font-size: 17px;
+        font-style: italic;
+        color: var(--purple-d);
+        line-height: 1.7;
+      }
+      .about-story p {
+        font-size: 16px;
+        color: #333;
+        line-height: 1.85;
+        margin-bottom: 18px;
+      }
+      .about-story h3 {
+        font-size: 22px;
+        font-weight: 800;
+        margin: 36px 0 16px;
+        color: var(--text);
+      }
+
+      /* ── FEATURES ────────────────────────────────────────────── */
+      .features {
+        background: var(--surface);
+      }
+      .features-header {
+        text-align: center;
+        max-width: 640px;
+        margin: 0 auto 64px;
+      }
+      .features-header .section-sub {
+        margin: 0 auto;
+      }
+      .features-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px;
+      }
+      .feature-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 28px;
+        box-shadow: 0 2px 0 #d1d5db, 0 4px 0 #e5e7eb, 0 6px 20px rgba(0,0,0,.05);
+        transform: translateY(0);
+        transition: transform .2s, box-shadow .2s;
+      }
+      .feature-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 6px 0 #fcd5a0, 0 8px 0 #fde8c8, 0 14px 32px rgba(212,137,42,.13);
+      }
+      .feature-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 22px;
+        margin-bottom: 16px;
+      }
+      .feature-card h3 {
+        font-size: 16px;
+        font-weight: 800;
+        margin-bottom: 8px;
+      }
+      .feature-card p {
+        font-size: 14px;
+        color: var(--muted);
+        line-height: 1.7;
+      }
+
+      /* ── HOW IT WORKS ────────────────────────────────────────── */
+      .how {
+        background: linear-gradient(170deg, #f0fdf4, #fef9f0);
+      }
+      .how-header {
+        text-align: center;
+        max-width: 580px;
+        margin: 0 auto 64px;
+      }
+      .steps {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 0;
+        position: relative;
+      }
+      .steps::before {
+        content: "";
+        position: absolute;
+        top: 28px;
+        left: 10%;
+        right: 10%;
+        height: 2px;
+        background: linear-gradient(90deg, var(--purple), var(--green));
+        z-index: 0;
+      }
+      .step {
+        text-align: center;
+        position: relative;
+        z-index: 1;
+        padding: 0 8px;
+      }
+      .step-num {
+        width: 56px;
+        height: 56px;
+        background: var(--purple);
+        color: #fff;
+        border-radius: 50%;
+        font-size: 20px;
+        font-weight: 900;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 16px;
+        box-shadow: 0 4px 16px rgba(212, 137, 42, 0.3);
+      }
+      .step:last-child .step-num {
+        background: var(--green);
+        box-shadow: 0 4px 16px rgba(34, 197, 94, 0.3);
+      }
+      .step h4 {
+        font-size: 13px;
+        font-weight: 700;
+        margin-bottom: 6px;
+      }
+      .step p {
+        font-size: 12px;
+        color: var(--muted);
+        line-height: 1.6;
+      }
+
+      /* ── RESEARCH ────────────────────────────────────────────── */
+      .research {
+        background: #1a1035;
+        color: #fff;
+      }
+      .research .section-title {
+        color: #fff;
+      }
+      .research .section-sub {
+        color: rgba(255, 255, 255, 0.6);
+      }
+      .research-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 24px;
+        margin-top: 48px;
+      }
+      .research-card {
+        background: rgba(255,255,255,.06);
+        border: 1px solid rgba(255,255,255,.1);
+        border-radius: var(--radius);
+        padding: 28px;
+        box-shadow: 0 3px 0 rgba(240,181,116,.15), 0 6px 0 rgba(212,137,42,.08), 0 10px 24px rgba(0,0,0,.2);
+        transform: translateY(0);
+        transition: transform .2s, box-shadow .2s, background .2s;
+      }
+      .research-card:hover {
+        transform: translateY(-4px);
+        background: rgba(255,255,255,.1);
+        box-shadow: 0 8px 0 rgba(240,181,116,.25), 0 12px 0 rgba(212,137,42,.12), 0 20px 40px rgba(0,0,0,.25);
+      }
+      .research-card h3 {
+        font-size: 16px;
+        font-weight: 800;
+        margin-bottom: 10px;
+        color: var(--purple-l);
+      }
+      .research-card p {
+        font-size: 14px;
+        color: rgba(255, 255, 255, 0.65);
+        line-height: 1.7;
+      }
+      .research-card cite {
+        display: block;
+        font-size: 11px;
+        color: rgba(255, 255, 255, 0.3);
+        margin-top: 12px;
+        font-style: italic;
+      }
+      .research-card cite a {
+        color: rgba(240, 181, 116, 0.7);
+      }
+      .stat-highlight {
+        font-size: 42px;
+        font-weight: 900;
+        color: var(--purple-l);
+        display: block;
+        letter-spacing: -0.03em;
+        line-height: 1;
+        margin-bottom: 8px;
+      }
+
+      /* ── AGE TABLE ───────────────────────────────────────────── */
+      .age-table {
+        margin-top: 56px;
+      }
+      .age-table-title {
+        font-size: 20px;
+        font-weight: 800;
+        color: rgba(255, 255, 255, 0.9);
+        margin-bottom: 20px;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      th {
+        background: rgba(212, 137, 42, 0.3);
+        color: var(--purple-l);
+        font-size: 13px;
+        font-weight: 700;
+        padding: 12px 16px;
+        text-align: left;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
+      td {
+        padding: 12px 16px;
+        font-size: 14px;
+        color: rgba(255, 255, 255, 0.7);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        line-height: 1.6;
+      }
+      tr:hover td {
+        background: rgba(255, 255, 255, 0.04);
+      }
+      th:first-child,
+      td:first-child {
+        border-radius: 8px 0 0 8px;
+        font-weight: 700;
+        color: rgba(255, 255, 255, 0.9);
+      }
+
+      /* ── FAQ ─────────────────────────────────────────────────── */
+      .faq {
+        background: var(--surface);
+      }
+      .faq-header {
+        text-align: center;
+        max-width: 580px;
+        margin: 0 auto 56px;
+      }
+      .faq-list {
+        max-width: 740px;
+        margin: 0 auto;
+      }
+      .faq-item {
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        margin-bottom: 14px;
+        overflow: hidden;
+        box-shadow: 0 2px 0 #d1d5db, 0 4px 12px rgba(0,0,0,.04);
+        transition: box-shadow .2s, transform .2s;
+      }
+      .faq-item:hover {
+        box-shadow: 0 4px 0 #fcd5a0, 0 8px 20px rgba(212,137,42,.09);
+        transform: translateY(-1px);
+      }
+      .faq-question {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px 24px;
+        cursor: pointer;
+        font-weight: 700;
+        font-size: 16px;
+        user-select: none;
+        transition: background 0.2s;
+      }
+      .faq-question:hover {
+        background: var(--bg);
+      }
+      .faq-arrow {
+        font-size: 20px;
+        color: var(--purple);
+        transition: transform 0.3s;
+        font-weight: 400;
+        flex-shrink: 0;
+      }
+      .faq-item.open .faq-arrow {
+        transform: rotate(180deg);
+      }
+      .faq-answer {
+        display: none;
+        padding: 0 24px 20px;
+        font-size: 15px;
+        color: var(--muted);
+        line-height: 1.75;
+      }
+      .faq-item.open .faq-answer {
+        display: block;
+      }
+
+      /* ── SOURCES ─────────────────────────────────────────────── */
+      .sources {
+        background: var(--bg);
+      }
+      .sources-header {
+        text-align: center;
+        max-width: 580px;
+        margin: 0 auto 40px;
+      }
+      .sources-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+      }
+      .source-item {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 14px 16px;
+        font-size: 13px;
+      }
+      .source-num {
+        display: inline-block;
+        background: var(--purple);
+        color: #fff;
+        font-size: 10px;
+        font-weight: 700;
+        padding: 2px 7px;
+        border-radius: 999px;
+        margin-right: 8px;
+      }
+      .source-item a {
+        font-size: 12px;
+        color: var(--muted);
+        word-break: break-all;
+      }
+      .source-item a:hover {
+        color: var(--purple);
+      }
+
+      /* ── CTA BANNER ──────────────────────────────────────────── */
+      .cta-banner {
+        background: linear-gradient(
+          135deg,
+          var(--purple-d),
+          var(--purple),
+          #f0b574
+        );
+        padding: 96px 0;
+        text-align: center;
+        color: #fff;
+      }
+      .cta-banner h2 {
+        font-size: clamp(28px, 4vw, 44px);
+        font-weight: 900;
+        margin-bottom: 16px;
+        letter-spacing: -0.02em;
+      }
+      .cta-banner p {
+        font-size: 18px;
+        color: rgba(255, 255, 255, 0.75);
+        margin-bottom: 36px;
+      }
+      .cta-banner .btn-white {
+        background: #fff;
+        color: var(--purple);
+        padding: 16px 36px;
+        border-radius: var(--radius);
+        font-weight: 800;
+        font-size: 17px;
+        text-decoration: none;
+        display: inline-block;
+        transition:
+          transform 0.2s,
+          box-shadow 0.2s;
+      }
+      .cta-banner .btn-white:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+        text-decoration: none;
+        color: var(--purple);
+      }
+
+      /* ── FOOTER ──────────────────────────────────────────────── */
+      footer {
+        background: #0f0a1e;
+        color: rgba(255, 255, 255, 0.6);
+        padding: 64px 0 32px;
+      }
+      .footer-grid {
+        display: grid;
+        grid-template-columns: 2fr 1fr 1fr 1fr;
+        gap: 48px;
+        margin-bottom: 48px;
+      }
+      .footer-brand .nav-logo {
+        color: #fff;
+        margin-bottom: 16px;
+        display: inline-flex;
+      }
+      .footer-brand p {
+        font-size: 14px;
+        line-height: 1.7;
+        max-width: 260px;
+      }
+      .footer-col h4 {
+        font-size: 13px;
+        font-weight: 700;
+        color: #fff;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        margin-bottom: 16px;
+      }
+      .footer-col ul {
+        list-style: none;
+      }
+      .footer-col ul li {
+        margin-bottom: 10px;
+      }
+      .footer-col ul li a {
+        font-size: 14px;
+        color: rgba(255, 255, 255, 0.5);
+        text-decoration: none;
+        transition: color 0.2s;
+      }
+      .footer-col ul li a:hover {
+        color: #fff;
+        text-decoration: none;
+      }
+      .footer-bottom {
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+        padding-top: 28px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 13px;
+      }
+      .footer-bottom a {
+        color: rgba(255, 255, 255, 0.4);
+      }
+      .footer-badge {
+        background: rgba(212, 137, 42, 0.2);
+        border: 1px solid rgba(212, 137, 42, 0.3);
+        color: var(--purple-l);
+        font-size: 11px;
+        font-weight: 600;
+        padding: 4px 12px;
+        border-radius: 999px;
+      }
+
+      /* ── HAMBURGER ───────────────────────────────────────────── */
+      .nav-burger {
+        display: none;
+        flex-direction: column;
+        gap: 5px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 4px;
+      }
+      .nav-burger span {
+        display: block;
+        width: 24px;
+        height: 2px;
+        background: var(--text);
+        border-radius: 2px;
+        transition: all .25s;
+      }
+      .nav-burger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+      .nav-burger.open span:nth-child(2) { opacity: 0; }
+      .nav-burger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+      .nav-mobile {
+        display: none;
+        flex-direction: column;
+        background: #fff;
+        border-top: 1px solid var(--border);
+        padding: 16px 24px 20px;
+        gap: 4px;
+      }
+      .nav-mobile.open { display: flex; }
+      .nav-mobile a {
+        font-size: 16px;
+        font-weight: 600;
+        color: var(--text);
+        text-decoration: none;
+        padding: 10px 0;
+        border-bottom: 1px solid var(--border);
+      }
+      .nav-mobile a:last-child { border-bottom: none; }
+      .nav-mobile a:hover { color: var(--purple); }
+
+      /* ── RESPONSIVE ──────────────────────────────────────────── */
+      @media (max-width: 900px) {
+        .hero-inner {
+          grid-template-columns: 1fr;
+        }
+        .hero-mockup {
+          display: none;
+        }
+        .stats-grid {
+          grid-template-columns: repeat(2, 1fr);
+          gap: 24px;
+        }
+        .problem-grid {
+          grid-template-columns: 1fr;
+        }
+        .about-inner {
+          grid-template-columns: 1fr;
+        }
+        .about-portrait {
+          position: static;
+        }
+        .features-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        .steps {
+          grid-template-columns: repeat(2, 1fr);
+          gap: 24px;
+        }
+        .steps::before {
+          display: none;
+        }
+        .research-grid {
+          grid-template-columns: 1fr;
+        }
+        .sources-grid {
+          grid-template-columns: 1fr;
+        }
+        .footer-grid {
+          grid-template-columns: 1fr 1fr;
+          gap: 32px;
+        }
+        .nav-links {
+          display: none;
+        }
+        .nav-burger {
+          display: flex;
+        }
+        .nav-cta { display: none; }
+      }
+
+      @media (max-width: 600px) {
+        .section {
+          padding: 64px 0;
+        }
+        .features-grid {
+          grid-template-columns: 1fr;
+        }
+        .stats-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+        .footer-grid {
+          grid-template-columns: 1fr;
+        }
+        .steps {
+          grid-template-columns: 1fr;
+        }
+        .footer-bottom {
+          flex-direction: column;
+          gap: 12px;
+          text-align: center;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- ═══════════════════════════════════════════════════════ HEADER -->
+    <header>
+      <div class="container">
+        <nav class="nav">
+          <a href="#" class="nav-logo">FamilyQuest</a>
+          <ul class="nav-links">
+            <li><a href="#features">Funktionen</a></li>
+            <li><a href="#about">Über uns</a></li>
+            <li><a href="#research">Forschung</a></li>
+            <li><a href="#faq">FAQ</a></li>
+            <li><a href="#" onclick="openModal('modal-impressum');return false;">Impressum</a></li>
+            <li><a href="#" onclick="openModal('modal-datenschutz');return false;">Datenschutz</a></li>
+            <li><a href="#" onclick="openModal('modal-agb');return false;">AGB</a></li>
+          </ul>
+          <a href="#cta" class="nav-cta">App herunterladen</a>
+          <button class="nav-burger" id="navBurger" aria-label="Menü öffnen" onclick="toggleMobileNav()">
+            <span></span><span></span><span></span>
+          </button>
+        </nav>
+      </div>
+      <nav class="nav-mobile" id="navMobile">
+        <a href="#features" onclick="closeMobileNav()">Funktionen</a>
+        <a href="#about" onclick="closeMobileNav()">Über uns</a>
+        <a href="#research" onclick="closeMobileNav()">Forschung</a>
+        <a href="#faq" onclick="closeMobileNav()">FAQ</a>
+        <a href="#" onclick="openModal('modal-impressum');closeMobileNav();return false;">Impressum</a>
+        <a href="#" onclick="openModal('modal-datenschutz');closeMobileNav();return false;">Datenschutz</a>
+        <a href="#" onclick="openModal('modal-agb');closeMobileNav();return false;">AGB</a>
+        <a href="#cta" onclick="closeMobileNav()" style="color:var(--purple);margin-top:8px;">App herunterladen</a>
+      </nav>
+    </header>
+
+    <!-- ═══════════════════════════════════════════════════════ HERO -->
+    <section class="hero">
+      <div class="container">
+        <div style="display:flex;justify-content:center;margin-bottom:8px;">
+          <img src="assets/images/logo.website.png" alt="FamilyQuest" style="width:680px;max-width:95%;object-fit:contain;">
+        </div>
+        <div class="hero-inner">
+          <div>
+            <div class="hero-badge">Bald als Beta auf Android verfügbar — iOS folgt</div>
+            <h1>
+              Bildschirmzeit <em>verdienen,</em> nicht zugeteilt bekommen.
+            </h1>
+            <p class="hero-sub">
+              FamilyQuest ist die Familienapp, bei der Kinder Bildschirmzeit
+              durch echte Aufgaben verdienen — und Eltern dabei entspannter
+              werden, weil beide Seiten in der Verantwortung stehen.
+            </p>
+            <div class="hero-actions">
+              <a href="#cta" class="btn-primary">📱 Jetzt kostenlos starten</a>
+              <a href="#about" class="btn-ghost">Unsere Geschichte</a>
+            </div>
+          </div>
+
+          <div class="hero-mockup">
+            <div class="phone-frame">
+              <div class="phone-screen">
+                <div class="phone-notch"></div>
+                <div class="phone-header">FamilyQuest</div>
+
+                <div class="phone-child-card">
+                  <div
+                    style="
+                      display: flex;
+                      justify-content: space-between;
+                      align-items: center;
+                      margin-bottom: 8px;
+                    "
+                  >
+                    <div class="phone-child-name">🦊 Lena · Level 7</div>
+                    <div
+                      style="font-size: 11px; color: #86efac; font-weight: 700"
+                    >
+                      ⚡ 340 XP
+                    </div>
+                  </div>
+                  <div class="phone-xp-bar">
+                    <div class="phone-xp-fill" style="width: 68%"></div>
+                  </div>
+                  <div class="phone-task">
+                    <span>🧹 Zimmer aufräumen</span>
+                    <span class="phone-task-reward">+20 Min</span>
+                  </div>
+                  <div class="phone-task">
+                    <span>🍽️ Tisch decken</span>
+                    <span class="phone-task-reward">+10 Min</span>
+                  </div>
+                  <div class="phone-task">
+                    <span>📚 Hausaufgaben</span>
+                    <span class="phone-task-reward">+30 Min</span>
+                  </div>
+                </div>
+
+                <div class="phone-timer">
+                  <div class="phone-timer-label">⏱️ Guthaben heute</div>
+                  <div class="phone-timer-value">1:45</div>
+                  <div
+                    style="
+                      font-size: 10px;
+                      color: rgba(255, 255, 255, 0.4);
+                      margin-top: 4px;
+                    "
+                  >
+                    Stunden verdient
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ STATS -->
+    <div class="stats-bar">
+      <div class="container">
+        <div class="stats-grid">
+          <div>
+            <div class="stat-number">46%</div>
+            <div class="stat-label">
+              Kinder (6–13 J.) besitzen ein eigenes Smartphone
+            </div>
+            <div class="stat-source">
+              KIM-Studie 2024 <sup><a href="#src-3">[3]</a></sup>
+            </div>
+          </div>
+          <div>
+            <div class="stat-number">&gt;50%</div>
+            <div class="stat-label">
+              unter 20-Jährige zeigen suchtartige Social-Media-Symptome
+            </div>
+            <div class="stat-source">
+              Psychotherapeutenkammer Berlin 2024
+              <sup><a href="#src-23">[23]</a></sup>
+            </div>
+          </div>
+          <div>
+            <div class="stat-number">63%</div>
+            <div class="stat-label">
+              der Eltern nutzen Medien gezielt als „Babysitter"
+            </div>
+            <div class="stat-source">
+              PMC Parental Beliefs Study 2024
+              <sup><a href="#src-20">[20]</a></sup>
+            </div>
+          </div>
+          <div>
+            <div class="stat-number">42%</div>
+            <div class="stat-label">
+              Kinder unter 13 Jahren nutzen TikTok trotz Altersgrenze
+            </div>
+            <div class="stat-source">
+              KIM-Studie 2024 <sup><a href="#src-3">[3]</a></sup>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════ LIVE STATS -->
+    <div class="live-stats-bar">
+      <div class="container">
+        <div class="live-stats-header">
+          <span class="live-dot"></span>
+          Live-Zahlen aus der App
+        </div>
+        <div class="live-stats-grid">
+          <div class="live-stat">
+            <div class="live-stat-number" id="stat-tasks">–</div>
+            <div class="live-stat-label">Aufgaben erledigt</div>
+          </div>
+          <div class="live-stat">
+            <div class="live-stat-number" id="stat-families">–</div>
+            <div class="live-stat-label">Familien aktiv</div>
+          </div>
+          <div class="live-stat">
+            <div class="live-stat-number" id="stat-wallet">–</div>
+            <div class="live-stat-label">Taschengeld angespart</div>
+          </div>
+          <div class="live-stat live-stat-top">
+            <div class="live-stat-label" style="margin-bottom:8px">Top-Aufgaben</div>
+            <ol class="live-top-list" id="stat-top-tasks">
+              <li>–</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════ PROBLEM -->
+    <section class="section problem" id="problem">
+      <div class="container">
+        <div class="badge">Das Problem</div>
+        <h2 class="section-title">
+          Wenn der Bildschirm das Familienleben dominiert
+        </h2>
+        <p class="section-sub">
+          Kinder wachsen in einer digital gesättigten Welt auf. Das ist kein
+          Vorwurf — aber die Forschung zeigt: Wenn Medienkonsum ungesteuert
+          bleibt, verlieren Kinder entscheidende Fähigkeiten.
+        </p>
+
+        <div class="problem-grid">
+          <div class="problem-block">
+            <div class="problem-block-icon">⏰</div>
+            <h3>Verdrängungseffekt</h3>
+            <p>
+              Die Verdrängungshypothese ist wissenschaftlich belegt: Jede Stunde
+              vor dem Bildschirm verdrängt potenziell entwicklungsfördernde
+              Aktivitäten — körperliche Bewegung, kreatives Spiel,
+              Haushaltspartizipation und soziale Interaktion. Zeit ist eine
+              Nullsumme.
+            </p>
+            <cite
+              >Quelle: PMC, „Time Well Spent?" <a href="#src-18">[18]</a></cite
+            >
+          </div>
+          <div class="problem-block">
+            <div class="problem-block-icon">🧠</div>
+            <h3>Motorische & kognitive Defizite</h3>
+            <p>
+              Ein signifikanter Anteil der Schulanfänger benötigt Ergotherapie
+              aufgrund motorischer Defizite. Häusliche Tätigkeiten — Wäsche
+              falten, Abwaschen, Kochen — wirken als niederschwelliges Training
+              für Fein- und Grobmotorik, das immer mehr Kindern fehlt.
+            </p>
+            <cite
+              >Quelle: Liebeundhirn.de, Neurowissenschaftliche Erkenntnisse
+              <a href="#src-12">[12]</a></cite
+            >
+          </div>
+          <div class="problem-block">
+            <div class="problem-block-icon">😔</div>
+            <h3>Psychische Belastung</h3>
+            <p>
+              Übermäßiger Medienkonsum ist mit Stress, depressiven Stimmungen
+              und Suchtverhalten assoziiert. Der soziale Aufwärtsvergleich auf
+              Instagram und TikTok mindert das Wohlbefinden und Selbstwertgefühl
+              nachweislich — besonders bei Mädchen.
+            </p>
+            <cite
+              >Quelle: DIPF Leibniz-Institut & Psychotherapeutenkammer Berlin
+              <a href="#src-23">[23]</a><a href="#src-24"> [24]</a></cite
+            >
+          </div>
+          <div class="problem-block">
+            <div class="problem-block-icon">👨‍👩‍👧</div>
+            <h3>Entfremdung im Familienalltag</h3>
+            <p>
+              „Technoference" — das permanente Smartphone-Checken während
+              Familieninteraktionen — signalisiert Desinteresse und schwächt
+              emotionale Bindungen. Gleichzeitig nutzen 63 % der Eltern Medien
+              als Coping-Strategie, was den Kreislauf verstärkt.
+            </p>
+            <cite
+              >Quelle: World Bank, „Screen Time in Early Childhood Education"
+              <a href="#src-36">[36]</a></cite
+            >
+          </div>
+          <div class="problem-block">
+            <div class="problem-block-icon">🏠</div>
+            <h3>Verlorene Lebenskompetenzen</h3>
+            <p>
+              Kinder, die nie im Haushalt mitgeholfen haben, kämpfen als
+              Erwachsene mit Entscheidungsschwäche und mangelnder
+              Selbstständigkeit. Eine Langzeitstudie der Harvard Medical School
+              belegt: Frühzeitige Haushaltspartizipation korreliert mit
+              beruflichem Erfolg und sozialer Kompetenz.
+            </p>
+            <cite
+              >Quelle: Schülerhilfe Magazin, Harvard-Langzeitstudie
+              <a href="#src-11">[11]</a></cite
+            >
+          </div>
+          <div class="problem-block">
+            <div class="problem-block-icon">🎯</div>
+            <h3>Was-bekomme-ich-dafür-Haltung</h3>
+            <p>
+              Belohnungssysteme können die intrinsische Motivation untergraben —
+              der sog. „Korrumpierungseffekt". FamilyQuest setzt deshalb bewusst
+              auf schrittweisen Übergang von extrinsischen zu intrinsischen
+              Anreizen: Bildschirmzeit als Übergangslösung, Werte als Ziel.
+            </p>
+            <cite
+              >Quelle: Mit-Kindern-Lernen.ch, Belohnungsdebatte
+              <a href="#src-29">[29]</a></cite
+            >
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ ÜBER UNS -->
+    <section class="section about" id="about">
+      <div class="container">
+        <div class="about-inner">
+          <div class="about-portrait">
+            <div class="portrait-card">
+              <div class="portrait-avatar"><img src="Website Profil.jpg" alt="Jens" style="width:100%;height:100%;object-fit:cover;object-position:center top;"></div>
+              <div class="portrait-name">Jens</div>
+              <div class="portrait-role">Entwickler & Vater von 2 Kindern</div>
+              <div class="portrait-tag">Saarland, Deutschland</div>
+              <div
+                style="
+                  margin-top: 20px;
+                  padding-top: 20px;
+                  border-top: 1px solid var(--border);
+                "
+              >
+                <div
+                  style="font-size: 13px; color: var(--muted); line-height: 1.7"
+                >
+                  <strong
+                    style="
+                      color: var(--text);
+                      display: block;
+                      margin-bottom: 6px;
+                    "
+                    >Was mich antreibt:</strong
+                  >
+                  Echte Erfahrungen mit meinen Kindern — nicht Theorie aus einem
+                  Lehrbuch.
+                </div>
+              </div>
+              <div
+                style="
+                  display: flex;
+                  gap: 8px;
+                  margin-top: 20px;
+                  justify-content: center;
+                  flex-wrap: wrap;
+                "
+              >
+                <span
+                  style="
+                    background: #f0fdf4;
+                    color: #16a34a;
+                    font-size: 11px;
+                    font-weight: 700;
+                    padding: 4px 10px;
+                    border-radius: 999px;
+                  "
+                  >📱 Android-Entwickler</span
+                >
+                <span
+                  style="
+                    background: #fef3c7;
+                    color: #d97706;
+                    font-size: 11px;
+                    font-weight: 700;
+                    padding: 4px 10px;
+                    border-radius: 999px;
+                  "
+                  >🎮 Gamification</span
+                >
+                <span
+                  style="
+                    background: #fef3e2;
+                    color: var(--purple);
+                    font-size: 11px;
+                    font-weight: 700;
+                    padding: 4px 10px;
+                    border-radius: 999px;
+                  "
+                  >👨‍👩‍👧 Vater</span
+                >
+              </div>
+            </div>
+          </div>
+
+          <div class="about-story">
+            <div class="badge">Unsere Geschichte</div>
+            <h2 class="section-title">
+              Wie FamilyQuest entstand — und warum es mich betrifft
+            </h2>
+
+            <p>
+              Kennst du dieses Geräusch? Dieses gedehnte, leicht angestrengte
+              „Hnnngh" — irgendwo zwischen Seufzer und Stöhnen — das Kinder
+              machen, wenn man sie bittet, etwas zu tun, das sie gerade sehr
+              stört. Kleider in den Wäschekorb. Frühstücksbrettchen wegräumen.
+              Zimmer aufräumen. Alltägliche Dinge, die eigentlich
+              selbstverständlich wären. Bei uns zu Hause war dieses Geräusch
+              Dauergast.
+            </p>
+
+            <p>
+              Mein Sohn (damals 8) und meine Tochter (damals 10) hatten das
+              Smartphone in der Hand — und gar keine Lust, auch nur einen Finger
+              krumm zu machen. Man musste sagen, bitten, erinnern, wieder sagen.
+              Und wieder. Und nochmal. Dazwischen: dieses Geräusch. Smartphone
+              und Medien first — das schien die unausgesprochene Regel im Alltag
+              geworden zu sein. Nicht weil meine Kinder schlechte Kinder sind.
+              Sondern weil es so einfach ist, in dieses Muster zu rutschen. Als
+              Elternteil genauso wie als Kind.
+            </p>
+
+            <blockquote>
+              „Als Vater von zwei Kindern weiß ich aus eigener Erfahrung: Es ist
+              viel einfacher, ein Kind mit einem Bildschirm zu beschäftigen, als
+              mit ihm gemeinsam zu kochen. Aber einfacher ist nicht dasselbe wie
+              besser."
+            </blockquote>
+
+            <p>
+              Ich fing an, kleine Dinge auszuprobieren. Aufgaben erledigen,
+              dafür Medienzeit bekommen. Es funktionierte — aber der Moment, der
+              mich wirklich überzeigt hat, war ein Diktat. Ich hatte absichtlich
+              30 Fehler eingebaut. Die Regel: Jeden gefundenen Fehler gibt es
+              eine Minute Bildschirmzeit. Was dann passierte, hätte ich so nicht
+              erwartet: Beide saßen länger über diesem Blatt Papier, als sie am
+              Ende überhaupt schauen durften. Aber das war ihnen egal. Sie
+              hatten diese Zeit <em>verdient</em> — und das hat sich anders
+              angefühlt. Für sie. Und für mich.
+            </p>
+
+            <p>
+              Ich sprach mit befreundeten Eltern, mit Arbeitskollegen, die
+              selbst Kinder haben. Und merkte schnell: Das Problem kenne nicht
+              nur ich. Fast überall dieselbe Geschichte. Dieselbe Erschöpfung.
+              Dasselbe Gefühl, täglich gegen unsichtbare Widerstände
+              anzukämpfen. Da war mir klar — das kann nicht die Lösung sein, die
+              es schon gibt. Das muss eine App werden.
+            </p>
+
+            <blockquote>
+              „Mein Sohn fragte mich nach einer Woche: ‚Papa, kann ich eine neue
+              Aufgabe haben? Ich will noch mehr Minuten verdienen.' — Das war
+              der Moment, an dem ich wusste: Ich muss das in eine App bauen."
+            </blockquote>
+
+            <h3>Was ich wirklich erreichen will</h3>
+
+            <p>
+              FamilyQuest ist kein Kontroll-Tool und kein digitales
+              Strafprogramm. Es ist ein Rahmen — eine strukturierte Möglichkeit,
+              Kindern beizubringen, dass Dinge im Leben nicht einfach passieren.
+              Dass man für das, was man will, etwas tun muss. Und dass Familie
+              kein Servicebetrieb ist, bei dem Eltern liefern und Kinder
+              konsumieren.
+            </p>
+
+            <p>
+              Ich will Werte vermitteln, die in einer Welt voller sozialer
+              Medien und KI-generierten Inhalten immer seltener werden:
+              <strong
+                >Verantwortung, Ausdauer, Verlässlichkeit,
+                Wertschätzung.</strong
+              >
+              Nicht durch Verbote — sondern durch Konsequenz und Transparenz.
+            </p>
+
+            <p>
+              Und ich will Eltern und Kinder wieder näher zusammenbringen. Beide
+              Seiten sollen in der Verantwortung stehen: Das Kind für seine
+              Aufgaben, der Elternteil für die Bestätigung. Gemeinsame
+              Herausforderungen, gemeinsame Erfolgserlebnisse — das ist Family
+              Quest.
+            </p>
+
+            <div
+              style="
+                background: #f0fdf4;
+                border: 1px solid #86efac;
+                border-radius: 14px;
+                padding: 20px 24px;
+                margin-top: 32px;
+              "
+            >
+              <div
+                style="
+                  font-size: 14px;
+                  font-weight: 700;
+                  color: #16a34a;
+                  margin-bottom: 8px;
+                "
+              >
+                💡 Die Philosophie hinter FamilyQuest
+              </div>
+              <div style="font-size: 14px; color: #15803d; line-height: 1.75">
+                Bildschirmzeit als Belohnung ist eine
+                <strong>Übergangslösung</strong> — ein Einstieg in
+                Verantwortung. Das Ziel ist, dass Kinder irgendwann nicht mehr
+                fragen „Was bekomme ich dafür?", sondern Aufgaben aus Einsicht
+                und Gewohnheit übernehmen. Die App begleitet diesen Weg.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ FEATURES -->
+    <section class="section features" id="features">
+      <div class="container">
+        <div class="features-header">
+          <div class="badge">Funktionen</div>
+          <h2 class="section-title">Alles, was eine moderne Familie braucht</h2>
+          <p class="section-sub">
+            Von der Aufgabenverwaltung bis zur echten
+            Android-Bildschirmzeitkontrolle — FamilyQuest deckt den kompletten
+            Familien-Workflow ab.
+          </p>
+        </div>
+
+        <div class="features-grid">
+          <div class="feature-card">
+            <div class="feature-icon" style="background: #fef3e2">⏱️</div>
+            <h3>Bildschirmzeit verdienen</h3>
+            <p>
+              Kinder erhalten Bildschirmzeit nicht einfach zugeteilt — sie
+              verdienen sie durch abgeschlossene Aufgaben. Der Timer läuft in
+              Echtzeit auf dem Kindgerät.
+            </p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon" style="background: #f0fdf4">📋</div>
+            <h3>Aufgaben-Verwaltung</h3>
+            <p>
+              Eltern erstellen individuelle Aufgaben pro Kind mit Belohnungen in
+              Minuten oder Taschengeld. Wiederholungsintervalle von stündlich
+              bis wöchentlich sind einstellbar.
+            </p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon" style="background: #fef3c7">🏆</div>
+            <h3>XP & Level-System</h3>
+            <p>
+              Kinder sammeln Erfahrungspunkte und steigen in Leveln auf — vom
+              Anfänger zur Legende. Streaks belohnen Konstanz über mehrere Tage.
+            </p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon" style="background: #fff0f0">🎯</div>
+            <h3>Challenges</h3>
+            <p>
+              Eltern erstellen mehrtägige Herausforderungen für ein oder mehrere
+              Kinder. Kinder nehmen an und verfolgen ihren Fortschritt in der
+              eigenen Ansicht.
+            </p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon" style="background: #f0f9ff">📊</div>
+            <h3>Dashboard & Statistiken</h3>
+            <p>
+              Eltern sehen auf einen Blick: App-Nutzung, verdiente Minuten,
+              Wochenchart, XP-Entwicklung und Streak — pro Kind, in Echtzeit.
+            </p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon" style="background: #fef3e2">📱</div>
+            <h3>Echte Android-Kontrolle</h3>
+            <p>
+              Das native Android-Modul misst echte App-Nutzungszeiten und sperrt
+              das Gerät wenn das Guthaben aufgebraucht ist — kein Fake-Timer,
+              echte Bildschirmzeitkontrolle.
+            </p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon" style="background: #f0fdf4">👨‍👩‍👧</div>
+            <h3>Co-Parent System</h3>
+            <p>
+              Beide Elternteile haben gleichberechtigten Zugriff über eigene
+              Konten. Einladungscode-basierter Beitritt, DSGVO-konform, keine
+              geteilten Passwörter.
+            </p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon" style="background: #fff7ed">🔔</div>
+            <h3>Push-Benachrichtigungen</h3>
+            <p>
+              Beide Elternteile werden benachrichtigt, wenn ein Kind eine
+              Aufgabe erledigt. Lokale Timer-Notifications halten Kinder
+              informiert.
+            </p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon" style="background: #fef3c7">💰</div>
+            <h3>Taschengeld-Wallet</h3>
+            <p>
+              Neben Bildschirmzeit können Aufgaben auch mit echtem Taschengeld
+              belohnt werden. Das Wallet zeigt Kontostand und
+              Transaktionshistorie.
+            </p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon" style="background: #fef3e2">🌍</div>
+            <h3>Mehrsprachig</h3>
+            <p>
+              FamilyQuest ist auf Deutsch, Englisch, Französisch, Spanisch und
+              Türkisch verfügbar — Sprachauswahl beim Erststart, jederzeit
+              änderbar.
+            </p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon" style="background: #f0fdf4">🔒</div>
+            <h3>Kind-Datenschutz (DSGVO)</h3>
+            <p>
+              Kinder können Standort-Teilen ein-/ausschalten und eine
+              Löschanfrage stellen. Eltern können alle Daten als JSON
+              exportieren (Art. 20 DSGVO).
+            </p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon" style="background: #fff0f0">📍</div>
+            <h3>Geräte-Verwaltung</h3>
+            <p>
+              Eltern können Apps dauerhaft sperren oder zeitlich begrenzen. Das
+              Gerät kann aus der Ferne gesperrt werden — mit einem Ping, der auf
+              dem Kindgerät erscheint.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ HOW IT WORKS -->
+    <section class="section how" id="how">
+      <div class="container">
+        <div class="how-header">
+          <div class="badge">So funktioniert es</div>
+          <h2 class="section-title">Der FamilyQuest-Kreislauf</h2>
+          <p class="section-sub">
+            Fünf einfache Schritte, die Verantwortung und Belohnung transparent
+            verbinden.
+          </p>
+        </div>
+
+        <div class="steps">
+          <div class="step">
+            <div class="step-num">1</div>
+            <h4>Aufgabe erstellen</h4>
+            <p>
+              Elternteil legt Aufgabe an — mit Belohnung in Minuten oder
+              Taschengeld.
+            </p>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <h4>Kind erledigt</h4>
+            <p>
+              Das Kind markiert die Aufgabe als erledigt. Status: „Ausstehend".
+            </p>
+          </div>
+          <div class="step">
+            <div class="step-num">3</div>
+            <h4>Eltern bestätigen</h4>
+            <p>
+              Elternteil 1 oder 2 prüft und bestätigt — beide werden per Push
+              informiert.
+            </p>
+          </div>
+          <div class="step">
+            <div class="step-num">4</div>
+            <h4>Guthaben & XP</h4>
+            <p>
+              Bildschirmzeit und XP werden dem Konto des Kindes gutgeschrieben.
+            </p>
+          </div>
+          <div class="step">
+            <div class="step-num">5</div>
+            <h4>Kind startet Timer</h4>
+            <p>
+              Das Kind startet den Timer — das Guthaben läuft in Echtzeit ab.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ RESEARCH -->
+    <section class="section research" id="research">
+      <div class="container">
+        <div
+          class="badge"
+          style="background: rgba(212, 137, 42, 0.3); color: var(--purple-l)"
+        >
+          Wissenschaft & Daten
+        </div>
+        <h2 class="section-title">Was die Forschung sagt</h2>
+        <p class="section-sub">
+          FamilyQuest ist nicht aus einer Idee entstanden — sondern aus einer
+          intensiven Auseinandersetzung mit medienpädagogischer und
+          entwicklungspsychologischer Forschung.
+        </p>
+
+        <div class="research-grid">
+          <div class="research-card">
+            <span class="stat-highlight">46%</span>
+            <h3>Smartphone-Besitz im Grundschulalter</h3>
+            <p>
+              Fast jedes zweite Kind zwischen 6 und 13 Jahren besitzt ein
+              eigenes Smartphone. Die tägliche Internetnutzung bei 8–9-Jährigen
+              hat sich seit 2022 nahezu verdoppelt. Netflix liegt erstmals vor
+              dem KiKA als beliebtestes Videoangebot dieser Altersgruppe.
+            </p>
+            <cite
+              >KIM-Studie 2024, Medienpädagogischer Forschungsverbund Südwest
+              <a
+                href="https://mpfs.de/app/uploads/2025/05/KIM-Studie-2024.pdf"
+                target="_blank"
+                >[3]</a
+              ></cite
+            >
+          </div>
+          <div class="research-card">
+            <span class="stat-highlight">Harvard</span>
+            <h3>Langzeitstudie: Hausarbeit = Lebenserfolg</h3>
+            <p>
+              Eine Langzeitstudie der Harvard Medical School belegt: Kinder, die
+              frühzeitig im Haushalt helfen, sind als Erwachsene beruflich
+              erfolgreicher, privat teamfähiger und verfügen über eine
+              ausgeprägtere Frustrationstoleranz. Der Effekt ist unabhängig vom
+              sozioökonomischen Hintergrund.
+            </p>
+            <cite
+              >Schülerhilfe Magazin, Verweis auf Harvard-Langzeitstudie
+              <a
+                href="https://www.schuelerhilfe.de/unternehmen/magazin/artikel/wenn-kinder-im-haushalt-helfen-geeignete-aufgaben-und-vorteile-fuer-die-entwicklung/"
+                target="_blank"
+                >[11]</a
+              ></cite
+            >
+          </div>
+          <div class="research-card">
+            <span class="stat-highlight">61%</span>
+            <h3>Jugendliche & Fake News</h3>
+            <p>
+              61 % der Jugendlichen fühlen sich Fake News ausgesetzt. Zwei
+              Drittel haben bereits Erfahrungen mit generativer KI. Die
+              Fähigkeit, KI-generierte Inhalte als solche zu erkennen,
+              entwickelt sich zur basalen Kulturtechnik — Medienkompetenz ist
+              kein Luxus mehr.
+            </p>
+            <cite
+              >JIM-Studie 2024, mpfs
+              <a href="https://mpfs.de/studie/jim-studie-2025/" target="_blank"
+                >[1, 2]</a
+              ></cite
+            >
+          </div>
+          <div class="research-card">
+            <span class="stat-highlight">Schutz&shy;faktor</span>
+            <h3>Haushalt als psychische Resilienz</h3>
+            <p>
+              Kinder, die sich als wertvoller Teil des Haushalts erleben, zeigen
+              eine höhere Resilienz gegenüber negativen Einflüssen digitaler
+              Räume. Ein stabiles Familienklima mit klaren Verantwortlichkeiten
+              wirkt als nachgewiesener Schutzfaktor gegen psychische
+              Belastungen.
+            </p>
+            <cite
+              >Liebeundhirn.de, neurowissenschaftliche Erkenntnisse
+              <a href="https://liebeundhirn.de/haushalt/" target="_blank"
+                >[12]</a
+              ></cite
+            >
+          </div>
+        </div>
+
+        <div class="age-table">
+          <div class="age-table-title">
+            📋 Altersgerechte Haushaltsaufgaben — wissenschaftlich fundiert
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Lebensphase</th>
+                <th>Mögliche Aufgaben</th>
+                <th>Entwicklungsziel</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Kleinkinder (1–3 J.)</td>
+                <td>Spielzeug aufräumen, einfache Dinge anreichen</td>
+                <td>Verständnis für Ordnung, Grobmotorik</td>
+              </tr>
+              <tr>
+                <td>Vorschulalter (3–5 J.)</td>
+                <td>Tisch decken, Socken paaren, Blumen gießen</td>
+                <td>Klassifizierung, Feinmotorik</td>
+              </tr>
+              <tr>
+                <td>Grundschulalter (6–10 J.)</td>
+                <td>Zimmer saugen, Haustiere füttern, Müll leeren</td>
+                <td>Zuverlässigkeit, Handlungsplanung</td>
+              </tr>
+              <tr>
+                <td>Jugendliche (ab 11 J.)</td>
+                <td>Mahlzeiten kochen, Bad putzen, Wäsche waschen</td>
+                <td>Umfassende Selbstständigkeit</td>
+              </tr>
+            </tbody>
+          </table>
+          <div
+            style="
+              font-size: 12px;
+              color: rgba(255, 255, 255, 0.3);
+              margin-top: 10px;
+            "
+          >
+            Quellen: IFP Familienhandbuch [13], AWO Mulde-Collm [14],
+            Liebeundhirn.de [15]
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ FAQ -->
+    <section class="section faq" id="faq">
+      <div class="container">
+        <div class="faq-header">
+          <div class="badge">Häufige Fragen</div>
+          <h2 class="section-title">FAQ</h2>
+          <p class="section-sub">
+            Alles, was du über FamilyQuest wissen musst — ehrlich und direkt
+            beantwortet.
+          </p>
+        </div>
+
+        <div class="faq-list">
+          <div class="faq-item open">
+            <div class="faq-question" onclick="toggleFaq(this)">
+              Ist FamilyQuest kostenlos?
+              <span class="faq-arrow">⌄</span>
+            </div>
+            <div class="faq-answer">
+              Ja — der Free-Plan ist dauerhaft kostenlos und enthält alle
+              Kernfunktionen für 1 Kind: Aufgaben erstellen, Bildschirmzeit
+              verdienen, XP-System, Timer und Dashboard. Für Familien mit 2–4
+              Kindern gibt es bezahlbare Pläne (Kleine Familie / Große Familie).
+              Es gibt keine versteckten Kosten und keine In-App-Werbung.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question" onclick="toggleFaq(this)">
+              Wie funktioniert die echte Bildschirmzeitkontrolle auf Android?
+              <span class="faq-arrow">⌄</span>
+            </div>
+            <div class="faq-answer">
+              FamilyQuest enthält ein natives Android-Modul, das echte
+              App-Nutzungszeiten via UsageStatsManager misst und einen
+              Overlay-Sperrbildschirm anzeigt, wenn das verdiente Guthaben
+              aufgebraucht ist. Das Kind muss der App einmalig die
+              Overlay-Berechtigung geben. Die Sperre ist kein einfacher
+              App-Blocker — sie überlagert alle Apps. Hinweis: iOS unterstützt
+              dieses Modell technisch nicht auf die gleiche Weise; hier arbeiten
+              wir an einer Apple-Lösung (Phase 2).
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question" onclick="toggleFaq(this)">
+              Können Kinder die Sperre umgehen?
+              <span class="faq-arrow">⌄</span>
+            </div>
+            <div class="faq-answer">
+              Technisch erfahrene Kinder könnten die Overlay-Berechtigung in den
+              Android-Einstellungen entziehen. Dies ist eine bekannte
+              Einschränkung — ein echter MDM-Sperrbildschirm (wie auf Managed
+              Devices in Schulen) ist ohne Enterprise-Software nicht möglich.
+              FamilyQuest setzt bewusst auf Vertrauen und Transparenz statt
+              absolute Kontrolle: Die App schafft einen Rahmen, den beide Seiten
+              respektieren sollen.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question" onclick="toggleFaq(this)">
+              Mein Partner / meine Partnerin will auch die App nutzen. Wie
+              funktioniert das?
+              <span class="faq-arrow">⌄</span>
+            </div>
+            <div class="faq-answer">
+              Über das Co-Parent System kann ein zweiter Elternteil mit einem
+              eigenen Konto der Familie beitreten. Elternteil 1 generiert einen
+              8-stelligen Einladungscode (7 Tage gültig) in den Einstellungen.
+              Elternteil 2 registriert sich mit einer eigenen E-Mail-Adresse und
+              gibt den Code ein — und hat sofort gleichberechtigten Zugriff auf
+              alle Kinder, Aufgaben und Benachrichtigungen. Keine geteilten
+              Passwörter, vollständig DSGVO-konform.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question" onclick="toggleFaq(this)">
+              Macht Bildschirmzeit als Belohnung Bildschirmzeit nicht
+              attraktiver?
+              <span class="faq-arrow">⌄</span>
+            </div>
+            <div class="faq-answer">
+              Diese Frage stellen wir uns selbst — und sie ist berechtigt. Die
+              Forschung spricht vom „Korrumpierungseffekt": Wenn man für etwas
+              belohnt wird, was man sonst freiwillig täte, kann die intrinsische
+              Motivation sinken. FamilyQuest nutzt Bildschirmzeit bewusst als
+              <em>Übergangslösung</em>, nicht als dauerhaftes System. Das Ziel
+              ist, dass Kinder mit der Zeit Aufgaben aus Gewohnheit und Einsicht
+              übernehmen — die App begleitet diesen Weg, ersetzt ihn aber nicht.
+              Regelmäßige Gespräche über den Sinn der Aufgaben sind weiterhin
+              essenziell.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question" onclick="toggleFaq(this)">
+              Für welche Altersgruppen eignet sich FamilyQuest?
+              <span class="faq-arrow">⌄</span>
+            </div>
+            <div class="faq-answer">
+              FamilyQuest ist für Kinder ab ca. 6 Jahren geeignet — wenn sie
+              lesen können und ein eigenes Gerät haben. Die App passt die
+              Kind-Oberfläche automatisch ans Alter an: Starter-Ansicht (6–7
+              J.), Explorer (8–10 J.), Hero (11–13 J.) und Pro-Ansicht für
+              Teenager (14+). Für jüngere Kinder (3–5 J.) können Eltern das
+              Tablet alleine nutzen und Aufgaben im Namen des Kindes abhaken.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question" onclick="toggleFaq(this)">
+              Wie werden meine Daten gespeichert? Ist die App DSGVO-konform?
+              <span class="faq-arrow">⌄</span>
+            </div>
+            <div class="faq-answer">
+              Alle Daten werden in einer europäischen Supabase-Datenbank
+              (PostgreSQL) gespeichert. Jede Datenbankregel (Row Level Security)
+              stellt sicher, dass Nutzer ausschließlich auf ihre eigenen Daten
+              zugreifen können. Eltern können ihre gesamten Daten als JSON
+              exportieren (Art. 20 DSGVO — Recht auf Datenportabilität) — direkt
+              in den App-Einstellungen. Kinder haben einen eigenen
+              Datenschutz-Screen mit Standort-Toggle und Konto-Löschanfrage.
+              Vollständige AGB und Datenschutzerklärung sind in der App
+              verfügbar.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question" onclick="toggleFaq(this)">
+              Kann ich mehrere Kinder mit unterschiedlichen Aufgaben verwalten?
+              <span class="faq-arrow">⌄</span>
+            </div>
+            <div class="faq-answer">
+              Ja. Jedes Kind hat ein eigenes Profil mit individuellen Aufgaben,
+              eigenem XP-Konto, eigenem Medienzeit-Guthaben und eigenem
+              Dashboard. Im Free-Plan ist 1 Kind inklusive. Mit dem Starter-Plan
+              (2 Kinder) oder Familien-Plan (4 Kinder) verwaltest du alle Kinder
+              in einer einzigen Elternansicht, scrollst zwischen Profilen und
+              bestätigst Aufgaben aller Kinder über einen einzigen
+              Bestätigungs-Screen.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question" onclick="toggleFaq(this)">
+              Was passiert, wenn ein Kind sein Guthaben aufgebraucht hat?
+              <span class="faq-arrow">⌄</span>
+            </div>
+            <div class="faq-answer">
+              Der Overlay-Sperrbildschirm erscheint automatisch und zeigt dem
+              Kind an, wie viele Minuten noch verfügbar sind (0). Das Kind sieht
+              sofort, welche Aufgaben heute noch offen sind und wie viele
+              Minuten es damit verdienen kann. So ist die Verbindung zwischen
+              Leistung und Belohnung immer sichtbar — kein Diskutieren, kein
+              Verhandeln nötig.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question" onclick="toggleFaq(this)">
+              Gibt es Unterstützungsangebote für Familien im Saarland?
+              <span class="faq-arrow">⌄</span>
+            </div>
+            <div class="faq-answer">
+              Ja. Für Familien im Saarland gibt es ein breites Netz an
+              Unterstützungsangeboten:
+              <ul style="margin-top: 10px; padding-left: 20px; line-height: 2">
+                <li>
+                  <strong>LMS Saarland / MedienKompetenzZentrum:</strong>
+                  Eltern-Seminare zu KI, Social Media, Medienabhängigkeit —
+                  <a href="https://lmsaar.de" target="_blank">lmsaar.de</a>
+                </li>
+                <li>
+                  <strong>Lebensberatung Saarlouis:</strong> Kostenfreie
+                  Erziehungs- und Familienberatung, Tel. 06831 2577
+                </li>
+                <li>
+                  <strong>Mogli Zentrum Saarlouis:</strong> Sucht- und
+                  Gewaltprävention, Tel. 06831 505889-0
+                </li>
+                <li>
+                  <strong>Family Guide Saarlouis:</strong> Mobile
+                  Familienzentrum, App mit Veranstaltungsdatenbank —
+                  <a href="https://familyguide-saarlouis.de" target="_blank"
+                    >familyguide-saarlouis.de</a
+                  >
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ SOURCES -->
+    <section
+      class="section sources"
+      id="sources"
+      style="padding-top: 64px; padding-bottom: 64px"
+    >
+      <div class="container">
+        <div class="sources-header">
+          <div class="badge">Quellen</div>
+          <h2 class="section-title" style="font-size: 28px">
+            Wissenschaftliche Grundlagen
+          </h2>
+          <p class="section-sub" style="font-size: 15px">
+            Alle Daten und Aussagen auf dieser Seite basieren auf verifizierten
+            wissenschaftlichen Quellen und Studien.
+          </p>
+        </div>
+
+        <div class="sources-grid">
+          <div class="source-item" id="src-1">
+            <span class="source-num">1</span><strong>JIM-Studie 2024</strong> —
+            Deutscher Präventionstag<br /><a
+              href="https://www.praeventionstag.de/nano.cms/news/details/9531"
+              target="_blank"
+              >praeventionstag.de/…/9531</a
+            >
+          </div>
+          <div class="source-item" id="src-2">
+            <span class="source-num">2</span><strong>JIM-Studie 2025</strong> —
+            mpfs<br /><a
+              href="https://mpfs.de/studie/jim-studie-2025/"
+              target="_blank"
+              >mpfs.de/studie/jim-studie-2025/</a
+            >
+          </div>
+          <div class="source-item" id="src-3">
+            <span class="source-num">3</span
+            ><strong>KIM-Studie 2024: Kindheit wird immer digitaler</strong> —
+            Schau hin<br /><a
+              href="https://www.schau-hin.info/studien/kim-studie-2024-kindheit-wird-immer-digitaler"
+              target="_blank"
+              >schau-hin.info/…</a
+            >
+          </div>
+          <div class="source-item" id="src-7">
+            <span class="source-num">7</span
+            ><strong>KIM-Studie 2024 Volltext</strong> — MPFS.de<br /><a
+              href="https://mpfs.de/app/uploads/2025/05/KIM-Studie-2024.pdf"
+              target="_blank"
+              >mpfs.de/…/KIM-Studie-2024.pdf</a
+            >
+          </div>
+          <div class="source-item" id="src-9">
+            <span class="source-num">9</span
+            ><strong>Digitale Medien & psychische Gesundheit</strong> — DGKJP<br /><a
+              href="https://www.dgkjp.de/wp-content/uploads/2026_02_19-STN-und-Wiss.-Ausarbeitung-Nutzung-digitaler-Medien-und-psychische-Gesundheit-von-Kindern-und-Jugendlichen.pdf"
+              target="_blank"
+              >dgkjp.de/…</a
+            >
+          </div>
+          <div class="source-item" id="src-11">
+            <span class="source-num">11</span
+            ><strong
+              >Kinder im Haushalt: Geeignete Aufgaben und Vorteile</strong
+            >
+            — Schülerhilfe<br /><a
+              href="https://www.schuelerhilfe.de/unternehmen/magazin/artikel/wenn-kinder-im-haushalt-helfen-geeignete-aufgaben-und-vorteile-fuer-die-entwicklung/"
+              target="_blank"
+              >schuelerhilfe.de/…</a
+            >
+          </div>
+          <div class="source-item" id="src-12">
+            <span class="source-num">12</span
+            ><strong>Erfolgreichere Kinder durch Mithilfe im Haushalt</strong> —
+            Liebeundhirn.de<br /><a
+              href="https://liebeundhirn.de/haushalt/"
+              target="_blank"
+              >liebeundhirn.de/haushalt/</a
+            >
+          </div>
+          <div class="source-item" id="src-13">
+            <span class="source-num">13</span
+            ><strong>Familiäre Alltagsaufgaben</strong> — IFP
+            Familienhandbuch<br /><a
+              href="https://www.familienhandbuch.de/familie-leben/organisieren/alltag/AlltagesaufgabenKindereinbeziehen.php"
+              target="_blank"
+              >familienhandbuch.de/…</a
+            >
+          </div>
+          <div class="source-item" id="src-18">
+            <span class="source-num">18</span
+            ><strong>Time Well Spent? TV Use vs. Free-Time Activities</strong> —
+            PMC<br /><a
+              href="https://pmc.ncbi.nlm.nih.gov/articles/PMC2862999/"
+              target="_blank"
+              >pmc.ncbi.nlm.nih.gov/…PMC2862999</a
+            >
+          </div>
+          <div class="source-item" id="src-20">
+            <span class="source-num">20</span
+            ><strong>Parental Beliefs & Excessive Screen Time</strong> — PMC<br /><a
+              href="https://pmc.ncbi.nlm.nih.gov/articles/PMC12198805/"
+              target="_blank"
+              >pmc.ncbi.nlm.nih.gov/…PMC12198805</a
+            >
+          </div>
+          <div class="source-item" id="src-22">
+            <span class="source-num">22</span
+            ><strong>Children's mental health: screen time & parenting</strong>
+            — PMC (KiGGS/BELLA)<br /><a
+              href="https://pmc.ncbi.nlm.nih.gov/articles/PMC10328867/"
+              target="_blank"
+              >pmc.ncbi.nlm.nih.gov/…PMC10328867</a
+            >
+          </div>
+          <div class="source-item" id="src-23">
+            <span class="source-num">23</span
+            ><strong>Soziale Medien & psychische Gesundheit</strong> —
+            Psychotherapeutenkammer Berlin<br /><a
+              href="https://www.psychotherapeutenkammer-berlin.de/media/2834"
+              target="_blank"
+              >psychotherapeutenkammer-berlin.de/…</a
+            >
+          </div>
+          <div class="source-item" id="src-24">
+            <span class="source-num">24</span
+            ><strong>Aufwärtsvergleiche & Wohlbefinden</strong> — DIPF
+            Leibniz-Institut<br /><a
+              href="https://www.dipf.de/de/dipf-aktuell/pressemitteilungen/soziale-medien-wie-aufwaertsvergleiche-und-wohlbefinden-bei-kindern-und-jugendlichen-zusammenhaengen"
+              target="_blank"
+              >dipf.de/…</a
+            >
+          </div>
+          <div class="source-item" id="src-29">
+            <span class="source-num">29</span
+            ><strong>Belohnungen: Nützlich oder schädlich?</strong> —
+            Mit-Kindern-Lernen.ch<br /><a
+              href="https://www.mit-kindern-lernen.ch/lernen-kinder/motivieren/100-belohnungen-nuetzlich-oder-schaedlich"
+              target="_blank"
+              >mit-kindern-lernen.ch/…</a
+            >
+          </div>
+          <div class="source-item" id="src-33">
+            <span class="source-num">33</span
+            ><strong>Internet-ABC Saarland</strong> — LMS Saarland<br /><a
+              href="https://www.internet-abc.de/lehrkraefte/laenderprojekte/uebersicht/saarland/"
+              target="_blank"
+              >internet-abc.de/…/saarland/</a
+            >
+          </div>
+          <div class="source-item" id="src-36">
+            <span class="source-num">36</span
+            ><strong>Screen Time in Early Childhood Education</strong> — World
+            Bank<br /><a
+              href="https://documents1.worldbank.org/curated/en/099931007302544113/pdf/IDU-baaf52dd-348a-4f1c-a226-0f8d86c86094.pdf"
+              target="_blank"
+              >worldbank.org/…</a
+            >
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ CTA BANNER -->
+    <section class="cta-banner" id="cta">
+      <div class="container">
+        <h2>Bereit, Bildschirmzeit neu zu denken?</h2>
+        <p>Kostenlos starten. Kein Abo erforderlich. Direkt auf Android.</p>
+        <a href="#" class="btn-white">📱 Jetzt App herunterladen</a>
+        <div
+          style="
+            margin-top: 20px;
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.45);
+          "
+        >
+          Verfügbar für Android · iOS in Kürze
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════ FOOTER -->
+    <footer>
+      <div class="container">
+        <div class="footer-grid">
+          <div class="footer-brand">
+            <a href="#" class="nav-logo">
+              <div class="nav-logo-icon"><img src="assets/images/logo&schrift.png" alt="FamilyQuest Logo" style="width:100%;height:100%;object-fit:contain;"></div>
+              FamilyQuest
+            </a>
+            <p>
+              Die Familienapp, bei der Kinder Bildschirmzeit durch Verantwortung
+              verdienen — und Familien wieder zusammenwachsen.
+            </p>
+            <div style="margin-top: 16px">
+              <span class="footer-badge">Made with ❤️ im Saarland</span>
+            </div>
+          </div>
+          <div class="footer-col">
+            <h4>App</h4>
+            <ul>
+              <li><a href="#features">Alle Funktionen</a></li>
+              <li><a href="#how">So funktioniert es</a></li>
+              <li><a href="#cta">Download</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h4>Über uns</h4>
+            <ul>
+              <li><a href="#about">Unsere Geschichte</a></li>
+              <li><a href="#research">Forschung & Daten</a></li>
+              <li><a href="#sources">Quellenverzeichnis</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h4>Rechtliches</h4>
+            <ul>
+              <li><a href="#">Datenschutzerklärung</a></li>
+              <li><a href="#">AGB</a></li>
+              <li><a href="#">Impressum</a></li>
+              <li><a href="#faq">FAQ</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <div>
+            © 2026 FamilyQuest. Alle Rechte vorbehalten. Gemäß § 19 UStG wird
+            keine Umsatzsteuer ausgewiesen.
+          </div>
+          <div style="display: flex; gap: 16px; align-items: center">
+            <a href="#">Datenschutz</a>
+            <a href="#">Impressum</a>
+            <a href="#">AGB</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- ═══════════════════════════════════════════════════════ MODAL: IMPRESSUM -->
+    <div class="legal-modal" id="modal-impressum" onclick="closeModalOutside(event,this)">
+      <div class="legal-modal-inner">
+        <div class="legal-modal-header">
+          <h2>🏢 Impressum</h2>
+          <button class="legal-modal-close" onclick="closeModal('modal-impressum')">✕</button>
+        </div>
+        <div class="legal-modal-body">
+          <div class="legal-intro">Angaben gemäß § 5 TMG</div>
+          <div class="legal-section">
+            <h3>Anbieter</h3>
+            <div class="legal-block">
+              <strong>FamilyQuest</strong><br>
+              Jens Regin<br>
+              Sperberweg 13<br>
+              66740 Saarlouis<br><br>
+              E-Mail: <a href="mailto:familyquest@gmail.com">familyquest@gmail.com</a>
+            </div>
+            <div class="legal-block" style="font-size:13px;color:var(--muted)">
+              Hinweis: FamilyQuest ist ein privates Projekt von Jens Regin. Es besteht keine juristische Person oder Firma hinter der App. Alle Rechte liegen beim Entwickler.
+            </div>
+          </div>
+          <div class="legal-section">
+            <h3>Verantwortlich für den Inhalt</h3>
+            <div class="legal-block">Jens Regin, Sperberweg 13, 66740 Saarlouis</div>
+          </div>
+          <div class="legal-section">
+            <h3>Streitschlichtung</h3>
+            <div class="legal-block">
+              Die EU-Kommission stellt eine Plattform zur Online-Streitbeilegung (OS) bereit: <a href="https://ec.europa.eu/consumers/odr" target="_blank">ec.europa.eu/consumers/odr</a><br><br>
+              Der Anbieter ist weder verpflichtet noch bereit, an einem Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.
+              <span class="legal-law">Art. 14 VO (EU) 524/2013</span>
+              <span class="legal-law">§ 36 VSBG</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════ MODAL: DATENSCHUTZ -->
+    <div class="legal-modal" id="modal-datenschutz" onclick="closeModalOutside(event,this)">
+      <div class="legal-modal-inner">
+        <div class="legal-modal-header">
+          <h2>🔒 Datenschutzerklärung</h2>
+          <button class="legal-modal-close" onclick="closeModal('modal-datenschutz')">✕</button>
+        </div>
+        <div class="legal-modal-body">
+          <div class="legal-intro">Stand: April 2026 · DSGVO-konform</div>
+
+          <div class="legal-section">
+            <h3>1. Verantwortlicher</h3>
+            <div class="legal-block">Jens Regin, Sperberweg 13, 66740 Saarlouis · familyquest@gmail.com</div>
+          </div>
+
+          <div class="legal-section">
+            <h3>2. Welche Daten wir erheben</h3>
+            <div class="legal-block">
+              <h4>Eltern-Account</h4>
+              <div class="legal-bullet">E-Mail-Adresse (für Login und Passwort-Reset)</div>
+              <div class="legal-bullet">Anzeigename (optional)</div>
+            </div>
+            <div class="legal-block">
+              <h4>Kinderprofil</h4>
+              <div class="legal-bullet">Name, Emoji und Farbe des Kindes</div>
+              <div class="legal-bullet">Alter (optional)</div>
+              <div class="legal-bullet">Aufgaben und Fortschritt</div>
+              <div class="legal-bullet">Medienzeit-Verbrauch pro Tag</div>
+              <div class="legal-bullet">GPS-Standort (nur wenn Kind aktiv zustimmt)</div>
+              <div class="legal-bullet">App-Nutzungszeiten (nur Android, Screen-Time-Funktion)</div>
+            </div>
+          </div>
+
+          <div class="legal-section">
+            <h3>3. Zweck der Datenverarbeitung</h3>
+            <div class="legal-block">
+              Die erhobenen Daten werden ausschließlich für den Betrieb der App verwendet:
+              <div class="legal-bullet">Bereitstellung der Eltern- und Kinderfunktionen</div>
+              <div class="legal-bullet">Synchronisation zwischen Eltern- und Kindergerät</div>
+              <div class="legal-bullet">Benachrichtigungen über abgeschlossene Aufgaben</div>
+              <div class="legal-bullet">Standortanzeige (nur bei ausdrücklicher Zustimmung des Kindes)</div>
+              <br>Es findet keine Weitergabe an Dritte zu Werbezwecken statt.
+            </div>
+          </div>
+
+          <div class="legal-section">
+            <h3>4. Datenspeicherung & Hosting</h3>
+            <div class="legal-block">
+              Alle Daten werden in der EU gespeichert (Supabase, Region eu-west-1, Irland). Supabase ist ISO 27001 zertifiziert und SOC 2 Type II konform.<br><br>
+              Daten werden nur so lange gespeichert, wie sie für die App-Nutzung notwendig sind. Bei Kontolöschung werden alle persönlichen Daten innerhalb von 30 Tagen gelöscht.
+            </div>
+          </div>
+
+          <div class="legal-section">
+            <h3>5. Besonderer Schutz von Kinderdaten</h3>
+            <div class="legal-block">
+              FamilyQuest verarbeitet Daten von Minderjährigen. Gemäß Art. 8 DSGVO ist die Einwilligung der erziehungsberechtigten Elternteile erforderlich.
+              <br><br>
+              <div class="legal-bullet">Kinder benötigen keinen eigenen Account – sie werden über Einladungscode verknüpft</div>
+              <div class="legal-bullet">GPS-Standort wird nur auf ausdrücklichen Wunsch des Kindes geteilt (Toggle in der App)</div>
+              <div class="legal-bullet">Eltern können alle Kinderdaten jederzeit einsehen und löschen</div>
+              <br>
+              <span class="legal-law">Art. 8 DSGVO</span>
+              <span class="legal-law">§ 1 BDSG</span>
+            </div>
+          </div>
+
+          <div class="legal-section">
+            <h3>6. Deine Rechte (DSGVO Art. 15–22)</h3>
+            <div class="legal-block">
+              Du hast das Recht auf:
+              <div class="legal-bullet"><strong>Auskunft</strong> – welche Daten wir über dich gespeichert haben</div>
+              <div class="legal-bullet"><strong>Berichtigung</strong> – Korrektur falscher Daten</div>
+              <div class="legal-bullet"><strong>Löschung</strong> – „Konto löschen" in den Einstellungen entfernt alle Daten</div>
+              <div class="legal-bullet"><strong>Einschränkung</strong> – Verarbeitung vorübergehend einschränken</div>
+              <div class="legal-bullet"><strong>Datenübertragbarkeit</strong> – Daten als JSON exportieren (Art. 20 DSGVO)</div>
+              <div class="legal-bullet"><strong>Widerspruch</strong> – gegen die Verarbeitung widersprechen</div>
+              <br>Anfragen an: <a href="mailto:familyquest@gmail.com">familyquest@gmail.com</a>
+            </div>
+          </div>
+
+          <div class="legal-section">
+            <h3>7. Push-Benachrichtigungen</h3>
+            <div class="legal-block">Mit deiner Zustimmung senden wir Push-Benachrichtigungen (z. B. wenn ein Kind eine Aufgabe abgeschlossen hat). Du kannst Benachrichtigungen jederzeit in den Systemeinstellungen deines Geräts deaktivieren.</div>
+          </div>
+
+          <div class="legal-section">
+            <h3>8. Änderungen & Beschwerderecht</h3>
+            <div class="legal-block">
+              Wir behalten uns vor, diese Datenschutzerklärung bei Bedarf anzupassen. Die aktuelle Version ist immer in der App unter Einstellungen → Datenschutz abrufbar.<br><br>
+              Du hast das Recht, dich bei einer Datenschutz-Aufsichtsbehörde zu beschweren. In Deutschland ist dies der Bundesbeauftragte für den Datenschutz und die Informationsfreiheit (BfDI).
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════ MODAL: AGB -->
+    <div class="legal-modal" id="modal-agb" onclick="closeModalOutside(event,this)">
+      <div class="legal-modal-inner">
+        <div class="legal-modal-header">
+          <h2>📜 Allgemeine Geschäftsbedingungen</h2>
+          <button class="legal-modal-close" onclick="closeModal('modal-agb')">✕</button>
+        </div>
+        <div class="legal-modal-body">
+          <div class="legal-intro">Stand: 10. April 2026 · Version 1</div>
+
+          <div class="legal-section">
+            <h3>§ 1 Geltungsbereich</h3>
+            <div class="legal-block">
+              Diese AGB gelten für die Nutzung der mobilen Anwendung „FamilyQuest" und alle damit verbundenen Dienste. Anbieter ist Jens Regin, Sperberweg 13, 66740 Saarlouis (E-Mail: familyquest@gmail.com).<br><br>
+              Die Nutzung der App setzt die vollständige Zustimmung zu diesen AGB voraus.
+              <br><span class="legal-law">§ 305 BGB</span><span class="legal-law">§ 305c BGB</span><span class="legal-law">§ 307 BGB</span>
+            </div>
+          </div>
+
+          <div class="legal-section">
+            <h3>§ 2 Vertragsschluss</h3>
+            <div class="legal-block">
+              Der Vertrag kommt durch die Registrierung in der App und die ausdrückliche Zustimmung zu diesen AGB zustande. Die Vertragssprache ist Deutsch.
+              <br><span class="legal-law">§ 130 BGB</span><span class="legal-law">Art. 246a § 1 EGBGB</span>
+            </div>
+          </div>
+
+          <div class="legal-section">
+            <h3>§ 3 Leistungsbeschreibung</h3>
+            <div class="legal-block">
+              FamilyQuest ist eine Familien-App zur Aufgabenverwaltung und Belohnungssteuerung für Kinder. Die App bietet folgende Pläne:
+              <div class="legal-bullet">Free: Grundfunktionen kostenlos, 1 Kind, Aufgaben, Medienzeit, XP & Level</div>
+              <div class="legal-bullet">Kleine Familie (Starter): Bis 2 Kinder, Challenges, Taschengeld-Wallet, Co-Parent, Push-Benachrichtigungen — monatlich oder jährlich</div>
+              <div class="legal-bullet">Große Familie: Bis 4 Kinder, alle Starter-Features, Prioritäts-Support — monatlich oder jährlich</div>
+              <br><span class="legal-law">§ 314 BGB</span>
+            </div>
+          </div>
+
+          <div class="legal-section">
+            <h3>§ 4 Preise und Zahlungsbedingungen</h3>
+            <div class="legal-block">
+              Alle Preise sind Endpreise in Euro. Gemäß § 19 UStG wird keine Umsatzsteuer berechnet (Kleinunternehmerregelung). Die Abrechnung erfolgt über Google Play / Apple App Store. Preisänderungen werden mindestens 30 Tage vorher mitgeteilt.
+              <br><span class="legal-law">§ 19 UStG</span><span class="legal-law">Art. 246a § 1 Nr. 5 EGBGB</span>
+            </div>
+          </div>
+
+          <div class="legal-section">
+            <h3>§ 5 Abonnement, Laufzeit und Kündigung</h3>
+            <div class="legal-block">
+              <strong>Monatsabonnement:</strong> Mindestlaufzeit 1 Monat, automatische Verlängerung um je 1 Monat, jederzeit kündbar zum Ende des Abrechnungszeitraums.<br><br>
+              <strong>Jahresabonnement:</strong> Laufzeit 12 Monate. Verlängert sich NICHT automatisch, sondern läuft aus. Erinnerung mindestens 30 Tage vor Ablauf.<br><br>
+              Kündigungen ausschließlich über die jeweilige App-Store-Verwaltung.
+              <br><span class="legal-law">§ 309 Nr. 9a BGB</span><span class="legal-law">§ 309 Nr. 9b BGB</span><span class="legal-law">§ 314 BGB</span>
+            </div>
+          </div>
+
+          <div class="legal-section">
+            <h3>§ 6 Widerrufsrecht bei digitalen Inhalten</h3>
+            <div class="legal-block">
+              Das 14-tägige Widerrufsrecht erlischt bei digitalen Inhalten vorzeitig, wenn der Nutzer ausdrücklich zugestimmt hat, dass die Ausführung vor Ablauf der Widerrufsfrist beginnt, und seine Kenntnis vom Rechtsverlust bestätigt hat.
+              <br><span class="legal-law">§ 356 Abs. 5 BGB</span><span class="legal-law">§ 312g BGB</span><span class="legal-law">Art. 16 lit. m RL 2011/83/EU</span>
+            </div>
+          </div>
+
+          <div class="legal-section">
+            <h3>§ 7 Haftungsbeschränkung</h3>
+            <div class="legal-block">
+              Der Anbieter haftet nach den gesetzlichen Vorschriften für Vorsatz und grobe Fahrlässigkeit sowie für Schäden aus der Verletzung von Leben, Körper oder Gesundheit. Bei einfacher Fahrlässigkeit ist die Haftung auf den vertragstypisch vorhersehbaren Schaden begrenzt. Für kostenlose Funktionen haftet der Anbieter nur bei Vorsatz und grober Fahrlässigkeit.
+              <br><span class="legal-law">§ 276 BGB</span><span class="legal-law">§ 280 BGB</span><span class="legal-law">§ 309 Nr. 7 BGB</span>
+            </div>
+          </div>
+
+          <div class="legal-section">
+            <h3>§ 8 Pflichten des Nutzers</h3>
+            <div class="legal-block">
+              <div class="legal-bullet">Zugangsdaten sicher aufbewahren und nicht weitergeben</div>
+              <div class="legal-bullet">Wahre und vollständige Angaben bei der Registrierung</div>
+              <div class="legal-bullet">App nicht für rechtswidrige Zwecke verwenden</div>
+              <div class="legal-bullet">Infrastruktur nicht übermäßig belasten</div>
+              <div class="legal-bullet">Missbrauch des Kontos unverzüglich melden</div>
+              <br><span class="legal-law">§ 241 Abs. 2 BGB</span>
+            </div>
+          </div>
+
+          <div class="legal-section">
+            <h3>§ 9 Datenschutz</h3>
+            <div class="legal-block">
+              Die Datenverarbeitung erfolgt gemäß der Datenschutzerklärung. Rechtsgrundlagen: Art. 6 Abs. 1 lit. b DSGVO (Vertragserfüllung), lit. a (Einwilligung), lit. f (berechtigte Interessen). Für Kinder unter 16 Jahren ist die elterliche Einwilligung erforderlich.
+              <br><span class="legal-law">Art. 6 DSGVO</span><span class="legal-law">Art. 8 DSGVO</span>
+            </div>
+          </div>
+
+          <div class="legal-section">
+            <h3>§ 10 Urheberrecht</h3>
+            <div class="legal-block">
+              Alle Inhalte der App sind urheberrechtlich geschützt. Der Nutzer erhält ein einfaches, nicht übertragbares Nutzungsrecht für private Zwecke. Reverse Engineering ist untersagt.
+              <br><span class="legal-law">§ 69a UrhG</span><span class="legal-law">§ 69c UrhG</span>
+            </div>
+          </div>
+
+          <div class="legal-section">
+            <h3>§ 11 Änderungen der AGB</h3>
+            <div class="legal-block">
+              Änderungen werden mindestens 30 Tage vor Inkrafttreten per In-App-Benachrichtigung mitgeteilt. Widerspricht der Nutzer nicht innerhalb von 30 Tagen, gelten die geänderten AGB als akzeptiert. Bei Widerspruch besteht ein Kündigungsrecht.
+              <br><span class="legal-law">§ 305 Abs. 2 BGB</span><span class="legal-law">§ 308 Nr. 5 BGB</span>
+            </div>
+          </div>
+
+          <div class="legal-section">
+            <h3>§ 12 Schlussbestimmungen</h3>
+            <div class="legal-block">
+              Es gilt deutsches Recht unter Ausschluss des UN-Kaufrechts (CISG). Gerichtsstand für Kaufleute ist der Sitz des Anbieters. Sollten einzelne Bestimmungen unwirksam sein, bleibt die Wirksamkeit der übrigen Bestimmungen unberührt.
+              <br><span class="legal-law">§ 306 BGB</span><span class="legal-law">Art. 14 VO (EU) 524/2013</span>
+            </div>
+          </div>
+
+          <div style="font-size:12px;color:var(--muted);text-align:center;margin-top:8px;padding:12px;background:var(--bg);border-radius:10px">
+            Stand: 10. April 2026 · Version 1 · Diese AGB wurden nach bestem Wissen auf Basis des deutschen Rechts erstellt und ersetzen keine individuelle Rechtsberatung.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function toggleFaq(el) {
+        const item = el.parentElement;
+        const isOpen = item.classList.contains("open");
+        document.querySelectorAll(".faq-item.open").forEach((i) => i.classList.remove("open"));
+        if (!isOpen) item.classList.add("open");
+      }
+
+      function toggleMobileNav() {
+        const burger = document.getElementById('navBurger');
+        const menu = document.getElementById('navMobile');
+        burger.classList.toggle('open');
+        menu.classList.toggle('open');
+      }
+      function closeMobileNav() {
+        document.getElementById('navBurger').classList.remove('open');
+        document.getElementById('navMobile').classList.remove('open');
+      }
+
+      function toggleDropdown(btn) {
+        const dropdown = btn.closest('.nav-dropdown');
+        const isOpen = dropdown.classList.contains('open');
+        // Alle anderen schließen
+        document.querySelectorAll('.nav-dropdown.open').forEach(d => d.classList.remove('open'));
+        if (!isOpen) dropdown.classList.add('open');
+      }
+      // Klick außerhalb schließt Dropdown
+      document.addEventListener('click', function(e) {
+        if (!e.target.closest('.nav-dropdown')) {
+          document.querySelectorAll('.nav-dropdown.open').forEach(d => d.classList.remove('open'));
+        }
+      });
+
+      function openModal(id) {
+        document.getElementById(id).classList.add("open");
+        document.body.style.overflow = "hidden";
+      }
+      function closeModal(id) {
+        document.getElementById(id).classList.remove("open");
+        document.body.style.overflow = "";
+      }
+      function closeModalOutside(e, modal) {
+        if (e.target === modal) closeModal(modal.id);
+      }
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") {
+          document.querySelectorAll(".legal-modal.open").forEach((m) => closeModal(m.id));
+        }
+      });
+
+      // Smooth scroll — skip modal-trigger links
+      document.querySelectorAll('a[href^="#"]').forEach((a) => {
+        a.addEventListener("click", (e) => {
+          const href = a.getAttribute("href");
+          if (href === "#") return;
+          const target = document.querySelector(href);
+          if (target) {
+            e.preventDefault();
+            target.scrollIntoView({ behavior: "smooth", block: "start" });
+          }
+        });
+      });
+    </script>
+
+    <!-- ══════════════════════════════════════ LIVE STATS COUNTER -->
+    <script>
+      (async function loadLiveStats() {
+        const SUPABASE_URL = 'https://jwbcbezuxgdgifszfwgj.supabase.co';
+        const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp3YmNiZXp1eGdkZ2lmc3pmd2dqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM0OTIxOTcsImV4cCI6MjA4OTA2ODE5N30.gkS2Hp7fhV8brtu2atPbtcCUeEuBMM8W2RVNsshFQ3U';
+
+        // Zahl animiert hochzählen
+        function animateCount(el, target, prefix, suffix) {
+          const duration = 1800;
+          const start = performance.now();
+          const from = 0;
+          function step(now) {
+            const progress = Math.min((now - start) / duration, 1);
+            const ease = 1 - Math.pow(1 - progress, 3);
+            const current = Math.round(from + (target - from) * ease);
+            el.textContent = prefix + current.toLocaleString('de-DE') + suffix;
+            if (progress < 1) requestAnimationFrame(step);
+          }
+          requestAnimationFrame(step);
+        }
+
+        try {
+          const res = await fetch(`${SUPABASE_URL}/rest/v1/rpc/get_public_stats`, {
+            method: 'POST',
+            headers: {
+              'apikey': SUPABASE_ANON,
+              'Authorization': `Bearer ${SUPABASE_ANON}`,
+              'Content-Type': 'application/json',
+            },
+            body: '{}',
+          });
+
+          if (!res.ok) return;
+          const data = await res.json();
+
+          // Aufgaben erledigt
+          const tasksEl = document.getElementById('stat-tasks');
+          if (tasksEl) animateCount(tasksEl, Number(data.tasks_completed ?? 0), '', '');
+
+          // Familien aktiv
+          const famEl = document.getElementById('stat-families');
+          if (famEl) animateCount(famEl, Number(data.family_count ?? 0), '', '');
+
+          // Taschengeld
+          const walletEl = document.getElementById('stat-wallet');
+          if (walletEl) animateCount(walletEl, Math.round(Number(data.wallet_total ?? 0)), '', ' €');
+
+          // Top-Aufgaben
+          const topEl = document.getElementById('stat-top-tasks');
+          if (topEl && data.top_tasks && data.top_tasks.length) {
+            topEl.innerHTML = data.top_tasks.map((t, i) =>
+              `<li><span class="live-top-rank">${i + 1}.</span>${t.title}</li>`
+            ).join('');
+          }
+        } catch (e) {
+          // Stille Fehlerbehandlung — Counter bleibt auf –
+        }
+      })();
+    </script>
+  </body>
+</html>
