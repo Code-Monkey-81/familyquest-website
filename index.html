@@ -1208,10 +1208,10 @@
       }
       .nav-burger span {
         display: block;
-        width: 28px;
-        height: 3px;
-        background: var(--purple);
-        border-radius: 3px;
+        width: 24px;
+        height: 2px;
+        background: var(--text);
+        border-radius: 2px;
         transition: all .25s;
       }
       .nav-burger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
@@ -1317,19 +1317,17 @@
     <header>
       <div class="container">
         <nav class="nav">
-          <a href="#" class="nav-logo">
-            <div class="nav-logo-icon"><img src="assets/images/logo-schrift.png" alt="FamilyQuest" style="width:100%;height:100%;object-fit:contain;"></div>
-          </a>
+          <a href="#" class="nav-logo">FamilyQuest</a>
           <ul class="nav-links">
             <li><a href="#features">Funktionen</a></li>
-            <li><a href="#about">Über mich</a></li>
+            <li><a href="#about">Über uns</a></li>
             <li><a href="#research">Forschung</a></li>
             <li><a href="#faq">FAQ</a></li>
             <li><a href="#" onclick="openModal('modal-impressum');return false;">Impressum</a></li>
             <li><a href="#" onclick="openModal('modal-datenschutz');return false;">Datenschutz</a></li>
             <li><a href="#" onclick="openModal('modal-agb');return false;">AGB</a></li>
           </ul>
-          <a href="#cta" class="nav-cta">App herunterladen</a>
+          <a href="#waitlist" class="nav-cta">🚀 Waitlist</a>
           <button class="nav-burger" id="navBurger" aria-label="Menü öffnen" onclick="toggleMobileNav()">
             <span></span><span></span><span></span>
           </button>
@@ -1337,13 +1335,13 @@
       </div>
       <nav class="nav-mobile" id="navMobile">
         <a href="#features" onclick="closeMobileNav()">Funktionen</a>
-        <a href="#about" onclick="closeMobileNav()">Über mich</a>
+        <a href="#about" onclick="closeMobileNav()">Über uns</a>
         <a href="#research" onclick="closeMobileNav()">Forschung</a>
         <a href="#faq" onclick="closeMobileNav()">FAQ</a>
         <a href="#" onclick="openModal('modal-impressum');closeMobileNav();return false;">Impressum</a>
         <a href="#" onclick="openModal('modal-datenschutz');closeMobileNav();return false;">Datenschutz</a>
         <a href="#" onclick="openModal('modal-agb');closeMobileNav();return false;">AGB</a>
-        <a href="#cta" onclick="closeMobileNav()" style="color:var(--purple);margin-top:8px;">App herunterladen</a>
+        <a href="#waitlist" onclick="closeMobileNav()" style="color:var(--purple);margin-top:8px;">🚀 Waitlist</a>
       </nav>
     </header>
 
@@ -1366,7 +1364,7 @@
             </p>
             <div class="hero-actions">
               <a href="#cta" class="btn-primary">📱 Jetzt kostenlos starten</a>
-              <a href="#about" class="btn-ghost">Die Geschichte</a>
+              <a href="#about" class="btn-ghost">Unsere Geschichte</a>
             </div>
           </div>
 
@@ -1474,6 +1472,77 @@
         </div>
       </div>
     </div>
+
+    <!-- ═══════════════════════════════════════════════════════ WAITLIST -->
+    <section id="waitlist" style="background:#d4892a;padding:56px 24px;text-align:center;">
+      <div style="max-width:520px;margin:0 auto;">
+        <div style="font-size:36px;margin-bottom:12px;">🚀</div>
+        <h2 style="font-family:'Inter',sans-serif;font-size:26px;font-weight:800;color:#fff;margin-bottom:10px;">Sei einer der Ersten!</h2>
+        <p style="color:rgba(255,255,255,0.85);font-size:15px;margin-bottom:8px;">
+          FamilyQuest kommt bald in den Google Play Store.<br>
+          Trag dich ein und ich melde mich, sobald es losgeht.
+        </p>
+        <p id="wl-counter" style="font-size:13px;color:#fff;font-weight:600;margin-bottom:24px;min-height:18px;"></p>
+        <div id="wl-form">
+          <div style="display:flex;gap:8px;max-width:420px;margin:0 auto;">
+            <input id="wl-email" type="email" placeholder="deine@email.de"
+              style="flex:1;padding:13px 16px;border:1.5px solid #e5e7eb;border-radius:12px;font-size:15px;font-family:'Inter',sans-serif;outline:none;"
+              onkeydown="if(event.key==='Enter')submitWaitlist()" />
+            <button onclick="submitWaitlist()"
+              style="background:#d4892a;color:#fff;border:none;border-radius:12px;padding:13px 22px;font-size:15px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;white-space:nowrap;">
+              Eintragen
+            </button>
+          </div>
+          <p id="wl-error" style="color:#ef4444;font-size:13px;margin-top:8px;min-height:18px;"></p>
+        </div>
+        <div id="wl-thanks" style="display:none;background:#f0fdf4;border:1.5px solid #86efac;border-radius:14px;padding:20px 24px;margin-top:8px;">
+          <div style="font-size:28px;margin-bottom:6px;">🎉</div>
+          <p style="font-weight:700;color:#16a34a;font-size:16px;margin-bottom:4px;">Danke für dein Interesse!</p>
+          <p style="color:#6b7280;font-size:14px;">Ich melde mich bei dir, wenn es losgeht – per E-Mail.</p>
+        </div>
+      </div>
+    </section>
+    <script>
+      (function() {
+        const SB_URL = 'https://jwbcbezuxgdgifszfwgj.supabase.co';
+        const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp3YmNiZXp1eGdkZ2lmc3pmd2dqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM0OTIxOTcsImV4cCI6MjA4OTA2ODE5N30.gkS2Hp7fhV8brtu2atPbtcCUeEuBMM8W2RVNsshFQ3U';
+        async function loadCounter() {
+          try {
+            const res = await fetch(SB_URL + '/rest/v1/waitlist?select=id', {
+              headers: { apikey: SB_KEY, 'Prefer': 'count=exact', 'Range-Unit': 'items', 'Range': '0-0' }
+            });
+            const count = parseInt(res.headers.get('content-range')?.split('/')[1] || '0');
+            document.getElementById('wl-counter').textContent =
+              count > 0 ? '🔥 ' + count + (count === 1 ? ' Person' : ' Personen') + ' bereits eingetragen' : '';
+          } catch(e) {}
+        }
+        window.submitWaitlist = async function() {
+          const email = document.getElementById('wl-email').value.trim();
+          const errEl = document.getElementById('wl-error');
+          errEl.textContent = '';
+          if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            errEl.textContent = 'Bitte gib eine gültige E-Mail-Adresse ein.'; return;
+          }
+          try {
+            const res = await fetch(SB_URL + '/rest/v1/waitlist', {
+              method: 'POST',
+              headers: { apikey: SB_KEY, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
+              body: JSON.stringify({ email })
+            });
+            if (res.status === 201) {
+              document.getElementById('wl-form').style.display = 'none';
+              document.getElementById('wl-thanks').style.display = 'block';
+              loadCounter();
+            } else if (res.status === 409) {
+              errEl.textContent = 'Diese E-Mail ist bereits eingetragen.';
+            } else {
+              errEl.textContent = 'Etwas ist schiefgelaufen. Bitte versuche es erneut.';
+            }
+          } catch(e) { document.getElementById('wl-error').textContent = 'Keine Verbindung. Bitte erneut versuchen.'; }
+        };
+        loadCounter();
+      })();
+    </script>
 
     <!-- ══════════════════════════════════════════════════ LIVE STATS -->
     <div class="live-stats-bar">
@@ -1614,7 +1683,7 @@
         <div class="about-inner">
           <div class="about-portrait">
             <div class="portrait-card">
-              <div class="portrait-avatar"><img src="assets/images/profil.jpg" alt="Jens" style="width:100%;height:100%;object-fit:cover;object-position:center top;"></div>
+              <div class="portrait-avatar"><img src="Website Profil.jpg" alt="Jens" style="width:100%;height:100%;object-fit:cover;object-position:center top;"></div>
               <div class="portrait-name">Jens</div>
               <div class="portrait-role">Entwickler & Vater von 2 Kindern</div>
               <div class="portrait-tag">Saarland, Deutschland</div>
@@ -1687,7 +1756,7 @@
           </div>
 
           <div class="about-story">
-            <div class="badge">Die Geschichte</div>
+            <div class="badge">Unsere Geschichte</div>
             <h2 class="section-title">
               Wie FamilyQuest entstand — und warum es mich betrifft
             </h2>
@@ -2508,7 +2577,7 @@
         <div class="footer-grid">
           <div class="footer-brand">
             <a href="#" class="nav-logo">
-              <div class="nav-logo-icon"><img src="assets/images/logo-schrift.png" alt="FamilyQuest Logo" style="width:100%;height:100%;object-fit:contain;"></div>
+              <div class="nav-logo-icon"><img src="assets/images/logo&schrift.png" alt="FamilyQuest Logo" style="width:100%;height:100%;object-fit:contain;"></div>
               FamilyQuest
             </a>
             <p>
@@ -2528,9 +2597,9 @@
             </ul>
           </div>
           <div class="footer-col">
-            <h4>Über mich</h4>
+            <h4>Über uns</h4>
             <ul>
-              <li><a href="#about">Die Geschichte</a></li>
+              <li><a href="#about">Unsere Geschichte</a></li>
               <li><a href="#research">Forschung & Daten</a></li>
               <li><a href="#sources">Quellenverzeichnis</a></li>
             </ul>
