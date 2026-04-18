@@ -1,6 +1,15 @@
 <!doctype html>
 <html lang="de">
   <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-F9LRJBEG6P"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-F9LRJBEG6P');
+    </script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>FamilyQuest – Bildschirmzeit verdienen, Verantwortung leben</title>
@@ -432,6 +441,30 @@
         align-items: center;
         position: relative;
       }
+
+      /* ── REEL IFRAME ──────────────────────────────────────────── */
+      .fq-reel {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+      }
+      .fq-reel__frame {
+        width: 100%;
+        max-width: 420px;
+        aspect-ratio: 9 / 16;
+        border: 0;
+        border-radius: 28px;
+        box-shadow:
+          0 1px 2px rgba(20, 16, 10, 0.06),
+          0 12px 40px -8px rgba(20, 16, 10, 0.18);
+        background: #FBF7EF;
+        display: block;
+      }
+      @media (max-width: 640px) {
+        .fq-reel__frame { max-width: 340px; border-radius: 22px; }
+      }
+
       .phone-frame {
         width: 260px;
         background: #1a1a2e;
@@ -1244,7 +1277,13 @@
           grid-template-columns: 1fr;
         }
         .hero-mockup {
-          display: none;
+          display: flex;
+          justify-content: center;
+          padding: 8px 0 16px;
+        }
+        .fq-reel__frame {
+          max-width: 300px;
+          border-radius: 20px;
         }
         .stats-grid {
           grid-template-columns: repeat(2, 1fr);
@@ -1369,58 +1408,15 @@
           </div>
 
           <div class="hero-mockup">
-            <div class="phone-frame">
-              <div class="phone-screen">
-                <div class="phone-notch"></div>
-                <div class="phone-header">FamilyQuest</div>
-
-                <div class="phone-child-card">
-                  <div
-                    style="
-                      display: flex;
-                      justify-content: space-between;
-                      align-items: center;
-                      margin-bottom: 8px;
-                    "
-                  >
-                    <div class="phone-child-name">🦊 Lena · Level 7</div>
-                    <div
-                      style="font-size: 11px; color: #86efac; font-weight: 700"
-                    >
-                      ⚡ 340 XP
-                    </div>
-                  </div>
-                  <div class="phone-xp-bar">
-                    <div class="phone-xp-fill" style="width: 68%"></div>
-                  </div>
-                  <div class="phone-task">
-                    <span>🧹 Zimmer aufräumen</span>
-                    <span class="phone-task-reward">+20 Min</span>
-                  </div>
-                  <div class="phone-task">
-                    <span>🍽️ Tisch decken</span>
-                    <span class="phone-task-reward">+10 Min</span>
-                  </div>
-                  <div class="phone-task">
-                    <span>📚 Hausaufgaben</span>
-                    <span class="phone-task-reward">+30 Min</span>
-                  </div>
-                </div>
-
-                <div class="phone-timer">
-                  <div class="phone-timer-label">⏱️ Guthaben heute</div>
-                  <div class="phone-timer-value">1:45</div>
-                  <div
-                    style="
-                      font-size: 10px;
-                      color: rgba(255, 255, 255, 0.4);
-                      margin-top: 4px;
-                    "
-                  >
-                    Stunden verdient
-                  </div>
-                </div>
-              </div>
+            <div class="fq-reel">
+              <iframe
+                class="fq-reel__frame"
+                src="/familyquest-reel/index.html"
+                title="FamilyQuest Demo Reel"
+                loading="lazy"
+                allow="autoplay"
+                scrolling="no"
+              ></iframe>
             </div>
           </div>
         </div>

@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>FamilyQuest — Reel</title>
+<style>
+  html, body { margin: 0; padding: 0; height: 100%; background: #FBF7EF; overflow: hidden; }
+  #root { position: fixed; inset: 0; }
+
+  /* Kill the playback bar entirely — the last flex child after the canvas wrapper. */
+  #root > div > div:last-child { display: none !important; }
+
+  /* The canvas wrapper is the first child — let it fill the whole iframe, no shadow. */
+  #root > div > div:first-child { flex: 1 1 100% !important; }
+  #root > div > div:first-child > div { box-shadow: none !important; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+<script type="text/babel" src="animations.jsx"></script>
+<script type="text/babel" src="scenes.jsx"></script>
+
+<script type="text/babel">
+  const { createRoot } = ReactDOM;
+
+  function App() {
+    // Embed mode: autoplay + loop, no persisted playhead, no controls.
+    return (
+      <Stage
+        width={1080}
+        height={1920}
+        duration={45}
+        background={BRAND.bg}
+        autoplay={true}
+        loop={true}
+        persistKey="fq-reel-embed"
+      >
+        <Video />
+      </Stage>
+    );
+  }
+
+  // Reset any persisted playhead so every visit starts at 0
+  try { localStorage.removeItem('fq-reel-embed:t'); } catch {}
+
+  createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>
