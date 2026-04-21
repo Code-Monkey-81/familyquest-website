@@ -80,7 +80,7 @@
       a { color: var(--purple); text-decoration: none; }
       a:hover { text-decoration: underline; }
 
-      /* ── HEADER ── */
+      /* ── HEADER ──────────────────────────────────────────────── */
       header {
         position: sticky;
         top: 0;
@@ -130,6 +130,7 @@
       }
       .nav-links a:hover { color: var(--purple); }
       .nav-links a.active { color: var(--purple); }
+
       .nav-cta {
         background: var(--purple);
         color: #fff !important;
@@ -142,7 +143,7 @@
       }
       .nav-cta:hover { background: var(--purple-d); text-decoration: none; }
 
-      /* Mobile nav */
+      /* ── HAMBURGER ───────────────────────────────────────────── */
       .nav-burger {
         display: none;
         flex-direction: column;
@@ -154,27 +155,31 @@
       }
       .nav-burger span {
         display: block;
-        width: 22px;
+        width: 24px;
         height: 2px;
         background: var(--text);
         border-radius: 2px;
-        transition: all .2s;
+        transition: all .25s;
       }
+      .nav-burger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+      .nav-burger.open span:nth-child(2) { opacity: 0; }
+      .nav-burger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
       .nav-mobile {
         display: none;
         flex-direction: column;
-        padding: 12px 24px 20px;
-        border-top: 1px solid var(--border);
         background: #fff;
+        border-top: 1px solid var(--border);
+        padding: 16px 24px 20px;
         gap: 4px;
       }
       .nav-mobile.open { display: flex; }
       .nav-mobile a {
-        font-size: 15px;
+        font-size: 16px;
         font-weight: 600;
-        color: var(--muted);
-        padding: 10px 0;
+        color: var(--text);
         text-decoration: none;
+        padding: 10px 0;
         border-bottom: 1px solid var(--border);
       }
       .nav-mobile a:last-child { border-bottom: none; }
@@ -668,6 +673,7 @@
         .footer-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
         .nav-links { display: none; }
         .nav-burger { display: flex; }
+        .nav-cta { display: none; }
       }
       @media (max-width: 600px) {
         .hero-pricing { padding: 56px 0 48px; }
@@ -680,23 +686,22 @@
   </head>
 
   <body>
-    <!-- ═══ HEADER ═══ -->
+    <!-- ═══════════════════════════════════════════════════════ HEADER -->
     <header>
       <div class="container">
         <nav class="nav">
-          <a href="index.html" class="nav-logo">
-            <div class="nav-logo-icon">
-              <img src="assets/images/logo&schrift.png" alt="FamilyQuest Logo" style="width:100%;height:100%;object-fit:contain;">
-            </div>
-          </a>
+          <a href="index.html" class="nav-logo">FamilyQuest</a>
           <ul class="nav-links">
             <li><a href="index.html#features">Funktionen</a></li>
             <li><a href="index.html#about">Über uns</a></li>
             <li><a href="index.html#research">Forschung</a></li>
             <li><a href="index.html#faq">FAQ</a></li>
             <li><a href="pricing.html" class="active">Preise</a></li>
+            <li><a href="index.html">Impressum</a></li>
+            <li><a href="index.html">Datenschutz</a></li>
+            <li><a href="index.html">AGB</a></li>
           </ul>
-          <a href="index.html#waitlist" class="nav-cta">📱 Jetzt starten</a>
+          <a href="index.html#waitlist" class="nav-cta">🚀 Waitlist</a>
           <button class="nav-burger" id="navBurger" aria-label="Menü öffnen" onclick="toggleMobileNav()">
             <span></span><span></span><span></span>
           </button>
@@ -708,7 +713,10 @@
         <a href="index.html#research" onclick="closeMobileNav()">Forschung</a>
         <a href="index.html#faq" onclick="closeMobileNav()">FAQ</a>
         <a href="pricing.html" onclick="closeMobileNav()" style="color:var(--purple);">Preise</a>
-        <a href="index.html#waitlist" onclick="closeMobileNav()" style="color:var(--purple);margin-top:8px;">📱 Jetzt starten</a>
+        <a href="index.html">Impressum</a>
+        <a href="index.html">Datenschutz</a>
+        <a href="index.html">AGB</a>
+        <a href="index.html#waitlist" onclick="closeMobileNav()" style="color:var(--purple);margin-top:8px;">🚀 Waitlist</a>
       </nav>
     </header>
 
@@ -1098,9 +1106,11 @@
       // ── Mobile Nav ──
       function toggleMobileNav() {
         document.getElementById('navMobile').classList.toggle('open');
+        document.getElementById('navBurger').classList.toggle('open');
       }
       function closeMobileNav() {
         document.getElementById('navMobile').classList.remove('open');
+        document.getElementById('navBurger').classList.remove('open');
       }
     </script>
   </body>
