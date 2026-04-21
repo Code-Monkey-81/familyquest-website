@@ -1476,27 +1476,48 @@
       <div style="max-width:520px;margin:0 auto;">
         <div style="font-size:36px;margin-bottom:12px;">🚀</div>
         <h2 style="font-family:'Inter',sans-serif;font-size:26px;font-weight:800;color:#fff;margin-bottom:10px;">Sei bei den Ersten dabei!</h2>
-        <p style="color:rgba(255,255,255,0.85);font-size:15px;margin-bottom:8px;">
+        <p style="color:rgba(255,255,255,0.85);font-size:15px;margin-bottom:20px;">
           FamilyQuest kommt bald in den Google Play Store.<br>
-          Trag dich ein und ich melde mich, sobald es losgeht.
+          Trag dich ein und sichere dir den lebenslangen Gründerpreis.
         </p>
-        <p id="wl-counter" style="font-size:13px;color:#fff;font-weight:600;margin-bottom:24px;min-height:18px;"></p>
+
+        <!-- Fortschrittsbalken -->
+        <div id="wl-progress-wrap" style="margin-bottom:20px;">
+          <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px;">
+            <span id="wl-taken" style="font-size:13px;font-weight:700;color:#fff;">… von 250 Plätzen belegt</span>
+            <span id="wl-left" style="font-size:13px;font-weight:600;color:rgba(255,255,255,0.85);">… noch frei</span>
+          </div>
+          <div style="background:rgba(255,255,255,0.25);border-radius:999px;height:8px;overflow:hidden;">
+            <div id="wl-bar" style="height:100%;background:#fff;border-radius:999px;width:0%;transition:width .6s ease;"></div>
+          </div>
+        </div>
+
+        <!-- Formular -->
         <div id="wl-form">
           <div style="display:flex;gap:8px;max-width:420px;margin:0 auto;">
             <input id="wl-email" type="email" placeholder="deine@email.de"
               style="flex:1;padding:13px 16px;border:1.5px solid #e5e7eb;border-radius:12px;font-size:15px;font-family:'Inter',sans-serif;outline:none;"
               onkeydown="if(event.key==='Enter')submitWaitlist()" />
-            <button onclick="submitWaitlist()"
-              style="background:#d4892a;color:#fff;border:none;border-radius:12px;padding:13px 22px;font-size:15px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;white-space:nowrap;">
+            <button id="wl-btn" onclick="submitWaitlist()"
+              style="background:#9b6020;color:#fff;border:none;border-radius:12px;padding:13px 22px;font-size:15px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;white-space:nowrap;">
               Eintragen
             </button>
           </div>
-          <p id="wl-error" style="color:#ef4444;font-size:13px;margin-top:8px;min-height:18px;"></p>
+          <p id="wl-error" style="color:#fde68a;font-size:13px;margin-top:8px;min-height:18px;"></p>
         </div>
+
+        <!-- Erfolg -->
         <div id="wl-thanks" style="display:none;background:#f0fdf4;border:1.5px solid #86efac;border-radius:14px;padding:20px 24px;margin-top:8px;">
           <div style="font-size:28px;margin-bottom:6px;">🎉</div>
-          <p style="font-weight:700;color:#16a34a;font-size:16px;margin-bottom:4px;">Danke für dein Interesse!</p>
-          <p style="color:#6b7280;font-size:14px;">Ich melde mich bei dir, wenn es losgeht – per E-Mail.</p>
+          <p style="font-weight:700;color:#16a34a;font-size:16px;margin-bottom:4px;">Gründerpreis gesichert!</p>
+          <p style="color:#6b7280;font-size:14px;">Du bist dabei — ich melde mich per E-Mail, sobald es losgeht.</p>
+        </div>
+
+        <!-- Voll -->
+        <div id="wl-full" style="display:none;background:rgba(255,255,255,0.15);border:1.5px solid rgba(255,255,255,0.35);border-radius:14px;padding:20px 24px;margin-top:8px;">
+          <div style="font-size:28px;margin-bottom:6px;">🔒</div>
+          <p style="font-weight:700;color:#fff;font-size:16px;margin-bottom:4px;">Alle 250 Gründerplätze sind vergeben</p>
+          <p style="color:rgba(255,255,255,0.85);font-size:14px;">Du kannst FamilyQuest weiterhin zu den regulären Preisen nutzen — <a href="pricing.html" style="color:#fff;font-weight:700;">Preise ansehen</a>.</p>
         </div>
       </div>
     </section>
@@ -1504,16 +1525,33 @@
       (function() {
         const SB_URL = 'https://jwbcbezuxgdgifszfwgj.supabase.co';
         const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp3YmNiZXp1eGdkZ2lmc3pmd2dqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM0OTIxOTcsImV4cCI6MjA4OTA2ODE5N30.gkS2Hp7fhV8brtu2atPbtcCUeEuBMM8W2RVNsshFQ3U';
+        const MAX = 250;
+
+        function updateUI(count) {
+          const taken = Math.min(count, MAX);
+          const left  = Math.max(MAX - taken, 0);
+          const pct   = Math.min((taken / MAX) * 100, 100);
+
+          document.getElementById('wl-taken').textContent = taken + ' von ' + MAX + ' Plätzen belegt';
+          document.getElementById('wl-left').textContent  = left > 0 ? left + ' noch frei' : 'ausgebucht';
+          document.getElementById('wl-bar').style.width   = pct + '%';
+
+          if (taken >= MAX) {
+            document.getElementById('wl-form').style.display = 'none';
+            document.getElementById('wl-full').style.display = 'block';
+          }
+        }
+
         async function loadCounter() {
           try {
             const res = await fetch(SB_URL + '/rest/v1/waitlist?select=id', {
               headers: { apikey: SB_KEY, 'Prefer': 'count=exact', 'Range-Unit': 'items', 'Range': '0-0' }
             });
             const count = parseInt(res.headers.get('content-range')?.split('/')[1] || '0');
-            document.getElementById('wl-counter').textContent =
-              count > 0 ? '🔥 ' + count + (count === 1 ? ' Person' : ' Personen') + ' bereits eingetragen' : '';
+            updateUI(count);
           } catch(e) {}
         }
+
         window.submitWaitlist = async function() {
           const email = document.getElementById('wl-email').value.trim();
           const errEl = document.getElementById('wl-error');
@@ -1521,6 +1559,8 @@
           if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
             errEl.textContent = 'Bitte gib eine gültige E-Mail-Adresse ein.'; return;
           }
+          const btn = document.getElementById('wl-btn');
+          btn.disabled = true; btn.textContent = '…';
           try {
             const res = await fetch(SB_URL + '/rest/v1/waitlist', {
               method: 'POST',
@@ -1533,11 +1573,17 @@
               loadCounter();
             } else if (res.status === 409) {
               errEl.textContent = 'Diese E-Mail ist bereits eingetragen.';
+              btn.disabled = false; btn.textContent = 'Eintragen';
             } else {
               errEl.textContent = 'Etwas ist schiefgelaufen. Bitte versuche es erneut.';
+              btn.disabled = false; btn.textContent = 'Eintragen';
             }
-          } catch(e) { document.getElementById('wl-error').textContent = 'Keine Verbindung. Bitte erneut versuchen.'; }
+          } catch(e) {
+            document.getElementById('wl-error').textContent = 'Keine Verbindung. Bitte erneut versuchen.';
+            btn.disabled = false; btn.textContent = 'Eintragen';
+          }
         };
+
         loadCounter();
       })();
     </script>

@@ -738,6 +738,16 @@
               Solange du Kunde bleibst, zahlst du nie mehr als den Gründerpreis —
               auch wenn die regulären Preise später steigen.
             </p>
+            <!-- Live-Fortschritt -->
+            <div id="fp-wrap" style="margin-top:14px;">
+              <div style="display:flex;justify-content:space-between;margin-bottom:5px;">
+                <span id="fp-taken" style="font-size:13px;font-weight:700;color:#7c5e2a;">… von 250 Plätzen belegt</span>
+                <span id="fp-left" style="font-size:13px;font-weight:600;color:#9b6020;">… noch frei</span>
+              </div>
+              <div style="background:#fcd5a0;border-radius:999px;height:7px;overflow:hidden;">
+                <div id="fp-bar" style="height:100%;background:#d4892a;border-radius:999px;width:0%;transition:width .6s ease;"></div>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -1036,6 +1046,22 @@
     </footer>
 
     <script>
+      // ── Gründerpreis Live-Counter ──
+      (function() {
+        const SB_URL = 'https://jwbcbezuxgdgifszfwgj.supabase.co';
+        const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp3YmNiZXp1eGdkZ2lmc3pmd2dqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM0OTIxOTcsImV4cCI6MjA4OTA2ODE5N30.gkS2Hp7fhV8brtu2atPbtcCUeEuBMM8W2RVNsshFQ3U';
+        const MAX = 250;
+        fetch(SB_URL + '/rest/v1/waitlist?select=id', {
+          headers: { apikey: SB_KEY, 'Prefer': 'count=exact', 'Range-Unit': 'items', 'Range': '0-0' }
+        }).then(res => {
+          const count = Math.min(parseInt(res.headers.get('content-range')?.split('/')[1] || '0'), MAX);
+          const left  = Math.max(MAX - count, 0);
+          document.getElementById('fp-taken').textContent = count + ' von ' + MAX + ' Plätzen belegt';
+          document.getElementById('fp-left').textContent  = left > 0 ? left + ' noch frei' : 'ausgebucht';
+          document.getElementById('fp-bar').style.width   = ((count / MAX) * 100) + '%';
+        }).catch(() => {});
+      })();
+
       // ── Toggle Monatlich / Jährlich ──
       const prices = {
         monthly: {
