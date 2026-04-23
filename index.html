@@ -1565,9 +1565,14 @@
             <li><a href="#faq">FAQ</a></li>
             <li><a href="#reviews">Bewertungen</a></li>
             <li><a href="pricing.html">Preise</a></li>
-            <li><a href="#" onclick="openModal('modal-impressum');return false;">Impressum</a></li>
-            <li><a href="#" onclick="openModal('modal-datenschutz');return false;">Datenschutz</a></li>
-            <li><a href="#" onclick="openModal('modal-agb');return false;">AGB</a></li>
+            <li class="nav-dropdown">
+              <button class="nav-dropdown-btn" onclick="toggleDropdown(this)">Rechtliches</button>
+              <div class="nav-dropdown-menu">
+                <a href="#" onclick="openModal('modal-impressum');return false;"><span>📄</span> Impressum</a>
+                <a href="#" onclick="openModal('modal-datenschutz');return false;"><span>🔒</span> Datenschutz</a>
+                <a href="#" onclick="openModal('modal-agb');return false;"><span>📋</span> AGB</a>
+              </div>
+            </li>
           </ul>
           <a href="#waitlist" class="nav-cta">🚀 Waitlist</a>
           <button class="nav-burger" id="navBurger" aria-label="Menü öffnen" onclick="toggleMobileNav()">
@@ -1582,9 +1587,9 @@
         <a href="#faq" onclick="closeMobileNav()">FAQ</a>
         <a href="#reviews" onclick="closeMobileNav()">Bewertungen</a>
         <a href="pricing.html" onclick="closeMobileNav()">Preise</a>
-        <a href="#" onclick="openModal('modal-impressum');closeMobileNav();return false;">Impressum</a>
-        <a href="#" onclick="openModal('modal-datenschutz');closeMobileNav();return false;">Datenschutz</a>
-        <a href="#" onclick="openModal('modal-agb');closeMobileNav();return false;">AGB</a>
+        <a href="#" onclick="openModal('modal-impressum');closeMobileNav();return false;">📄 Impressum</a>
+        <a href="#" onclick="openModal('modal-datenschutz');closeMobileNav();return false;">🔒 Datenschutz</a>
+        <a href="#" onclick="openModal('modal-agb');closeMobileNav();return false;">📋 AGB</a>
         <a href="#waitlist" onclick="closeMobileNav()" style="color:var(--purple);margin-top:8px;">🚀 Waitlist</a>
       </nav>
     </header>
