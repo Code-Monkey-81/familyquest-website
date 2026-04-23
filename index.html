@@ -1385,7 +1385,171 @@
           gap: 12px;
           text-align: center;
         }
+        .reviews-grid { grid-template-columns: 1fr; }
+        .review-form-row { flex-direction: column; }
       }
+    </style>
+
+    <style>
+      /* ── REVIEWS ─────────────────────────────────────────────────── */
+      .reviews-section {
+        background: #f9f5ef;
+        padding: 80px 24px;
+      }
+      .reviews-header {
+        text-align: center;
+        margin-bottom: 48px;
+      }
+      .reviews-header .badge {
+        display: inline-block;
+        background: #fef3e2;
+        color: var(--purple);
+        font-size: 12px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: .08em;
+        padding: 4px 14px;
+        border-radius: 20px;
+        margin-bottom: 14px;
+      }
+      .reviews-header .section-title { margin-bottom: 10px; }
+      .reviews-header .section-sub   { max-width: 520px; margin: 0 auto; }
+
+      /* Bewertungs-Karten */
+      .reviews-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+        margin-bottom: 52px;
+      }
+      .review-card {
+        background: #fff;
+        border: 1px solid #ede8df;
+        border-radius: 16px;
+        padding: 24px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .review-stars {
+        color: #f59e0b;
+        font-size: 17px;
+        letter-spacing: 2px;
+      }
+      .review-text {
+        font-size: 14px;
+        color: #4b5563;
+        line-height: 1.65;
+        flex: 1;
+      }
+      .review-author {
+        font-size: 13px;
+        font-weight: 700;
+        color: #1f2937;
+        margin-top: 4px;
+      }
+      .review-date {
+        font-size: 11px;
+        color: #9ca3af;
+      }
+      .reviews-empty {
+        text-align: center;
+        color: #9ca3af;
+        font-size: 14px;
+        padding: 32px 0;
+        grid-column: 1/-1;
+      }
+
+      /* Formular */
+      .review-form-wrap {
+        background: #fff;
+        border: 1px solid #ede8df;
+        border-radius: 20px;
+        padding: 36px 40px;
+        max-width: 680px;
+        margin: 0 auto;
+      }
+      .review-form-title {
+        font-size: 20px;
+        font-weight: 700;
+        color: #1f2937;
+        margin-bottom: 6px;
+      }
+      .review-form-sub {
+        font-size: 14px;
+        color: #6b7280;
+        margin-bottom: 28px;
+      }
+      .review-form-row {
+        display: flex;
+        gap: 16px;
+        margin-bottom: 16px;
+      }
+      .review-form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        flex: 1;
+      }
+      .review-form-group label {
+        font-size: 13px;
+        font-weight: 600;
+        color: #374151;
+      }
+      .review-form-group input,
+      .review-form-group textarea {
+        border: 1.5px solid #d1d5db;
+        border-radius: 10px;
+        padding: 10px 14px;
+        font-size: 14px;
+        font-family: inherit;
+        color: #1f2937;
+        background: #fafafa;
+        outline: none;
+        transition: border-color .15s;
+        resize: vertical;
+      }
+      .review-form-group input:focus,
+      .review-form-group textarea:focus {
+        border-color: var(--purple);
+      }
+      /* Stern-Auswahl */
+      .star-picker {
+        display: flex;
+        gap: 6px;
+      }
+      .star-picker span {
+        font-size: 26px;
+        cursor: pointer;
+        color: #d1d5db;
+        transition: color .12s, transform .1s;
+        user-select: none;
+      }
+      .star-picker span.active,
+      .star-picker span:hover { color: #f59e0b; transform: scale(1.15); }
+      .review-submit-btn {
+        width: 100%;
+        margin-top: 8px;
+        padding: 13px;
+        background: var(--purple);
+        color: #fff;
+        border: none;
+        border-radius: 10px;
+        font-size: 15px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: background .15s;
+      }
+      .review-submit-btn:hover { background: var(--purple-d); }
+      .review-submit-btn:disabled { opacity: .55; cursor: default; }
+      .review-form-msg {
+        font-size: 13px;
+        margin-top: 12px;
+        text-align: center;
+        min-height: 18px;
+      }
+      .review-form-msg.success { color: #16a34a; }
+      .review-form-msg.error   { color: #dc2626; }
     </style>
   </head>
   <body>
@@ -2655,6 +2819,57 @@
       </div>
     </section>
 
+    <!-- ═══════════════════════════════════════════════════════ REVIEWS -->
+    <section class="reviews-section" id="reviews">
+      <div class="container">
+        <div class="reviews-header">
+          <div class="badge">Eltern-Stimmen</div>
+          <h2 class="section-title">Was Familien sagen</h2>
+          <p class="section-sub">Echte Erfahrungen von Eltern, die FamilyQuest bereits nutzen.</p>
+        </div>
+
+        <!-- Bestehende Bewertungen -->
+        <div class="reviews-grid" id="reviews-list">
+          <div class="reviews-empty">Bewertungen werden geladen…</div>
+        </div>
+
+        <!-- Formular -->
+        <div class="review-form-wrap">
+          <div class="review-form-title">Deine Erfahrung teilen</div>
+          <div class="review-form-sub">Wie hat FamilyQuest deine Familie verändert? Hinterlasse eine kurze Bewertung — sie hilft anderen Eltern bei der Entscheidung.</div>
+
+          <form id="review-form" novalidate>
+            <div class="review-form-row">
+              <div class="review-form-group">
+                <label for="review-name">Dein Name *</label>
+                <input id="review-name" type="text" placeholder="z. B. Sandra M." maxlength="60" required />
+              </div>
+              <div class="review-form-group" style="flex:0 0 auto;">
+                <label>Bewertung *</label>
+                <div class="star-picker" id="star-picker">
+                  <span data-v="1">★</span>
+                  <span data-v="2">★</span>
+                  <span data-v="3">★</span>
+                  <span data-v="4">★</span>
+                  <span data-v="5">★</span>
+                </div>
+              </div>
+            </div>
+            <div class="review-form-group" style="margin-bottom:16px;">
+              <label for="review-text">Dein Kommentar *</label>
+              <textarea id="review-text" rows="4" placeholder="Was hat sich verändert? Was gefällt dir besonders?" maxlength="600" required></textarea>
+            </div>
+            <button type="submit" class="review-submit-btn" id="review-submit">Bewertung abschicken</button>
+            <div class="review-form-msg" id="review-msg"></div>
+          </form>
+
+          <p style="font-size:11px;color:#9ca3af;text-align:center;margin-top:14px;">
+            Bewertungen werden vor der Veröffentlichung geprüft. Kein Account nötig.
+          </p>
+        </div>
+      </div>
+    </section>
+
     <!-- ═══════════════════════════════════════════════════════ CTA BANNER -->
     <section class="cta-banner" id="cta">
       <div class="container">
@@ -3115,10 +3330,26 @@
           const walletEl = document.getElementById('stat-wallet');
           if (walletEl) animateCount(walletEl, withFloor('wallet', Math.round(Number(data.wallet_total ?? 0))), '', ' €');
 
-          // Top-10 Aufgaben mit Zeit oder Taschengeld
+          // Top-10 Aufgaben — echte Daten oder kuratierte Beispiele als Fallback
+          const EXAMPLE_TASKS = [
+            { title: 'Zimmer aufräumen',        reward_type: 'time',  avg_minutes: 20, avg_euros: 0 },
+            { title: 'Hausaufgaben machen',     reward_type: 'time',  avg_minutes: 45, avg_euros: 0 },
+            { title: 'Geschirrspüler ausräumen',reward_type: 'time',  avg_minutes: 15, avg_euros: 0 },
+            { title: 'Tisch decken',            reward_type: 'time',  avg_minutes: 10, avg_euros: 0 },
+            { title: 'Müll rausbringen',        reward_type: 'money', avg_minutes: 0,  avg_euros: 0.50 },
+            { title: 'Bett machen',             reward_type: 'time',  avg_minutes: 10, avg_euros: 0 },
+            { title: 'Haustier füttern',        reward_type: 'time',  avg_minutes: 10, avg_euros: 0 },
+            { title: 'Badezimmer putzen',       reward_type: 'money', avg_minutes: 0,  avg_euros: 1.00 },
+            { title: 'Einkaufen helfen',        reward_type: 'time',  avg_minutes: 30, avg_euros: 0 },
+            { title: 'Laub harken',             reward_type: 'money', avg_minutes: 0,  avg_euros: 2.00 },
+          ];
+
           const topEl = document.getElementById('stat-top-tasks');
-          if (topEl && Array.isArray(data.top_tasks) && data.top_tasks.length) {
-            topEl.innerHTML = data.top_tasks.map((t, i) => {
+          if (topEl) {
+            const tasks = (Array.isArray(data.top_tasks) && data.top_tasks.length >= 5)
+              ? data.top_tasks
+              : EXAMPLE_TASKS;
+            topEl.innerHTML = tasks.map((t, i) => {
               let rewardHtml = '';
               if (t.reward_type === 'money' && t.avg_euros > 0) {
                 rewardHtml = `<span class="live-top-reward money">💰 ${Number(t.avg_euros).toFixed(2).replace('.', ',')} €</span>`;
@@ -3131,12 +3362,119 @@
                 ${rewardHtml}
               </li>`;
             }).join('');
-          } else if (topEl) {
-            topEl.innerHTML = '<li><span class="live-top-rank">–</span><span class="live-top-title">Noch keine Daten</span></li>';
           }
         } catch (e) {
           // Stille Fehlerbehandlung — Counter bleibt auf –
         }
+      })();
+
+      // ── Reviews laden ────────────────────────────────────────────────────────
+      (async () => {
+        const listEl = document.getElementById('reviews-list');
+        if (!listEl) return;
+
+        try {
+          const res = await fetch(`${SUPABASE_URL}/rest/v1/rpc/get_public_reviews`, {
+            method: 'POST',
+            headers: {
+              'apikey': SUPABASE_ANON,
+              'Authorization': `Bearer ${SUPABASE_ANON}`,
+              'Content-Type': 'application/json',
+            },
+            body: '{}',
+          });
+
+          if (!res.ok) throw new Error('fetch failed');
+          const reviews = await res.json();
+
+          if (Array.isArray(reviews) && reviews.length > 0) {
+            listEl.innerHTML = reviews.map(r => {
+              const stars = '★'.repeat(r.stars) + '☆'.repeat(5 - r.stars);
+              const date  = new Date(r.created_at).toLocaleDateString('de-DE', { month: 'long', year: 'numeric' });
+              return `<div class="review-card">
+                <div class="review-stars">${stars}</div>
+                <div class="review-text">${r.text.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div>
+                <div class="review-author">${r.name.replace(/</g,'&lt;')}</div>
+                <div class="review-date">${date}</div>
+              </div>`;
+            }).join('');
+          } else {
+            listEl.innerHTML = `<div class="reviews-empty">Noch keine Bewertungen — sei der Erste! 👇</div>`;
+          }
+        } catch (e) {
+          listEl.innerHTML = `<div class="reviews-empty">Bewertungen konnten nicht geladen werden.</div>`;
+        }
+      })();
+
+      // ── Review-Formular ──────────────────────────────────────────────────────
+      (() => {
+        let selectedStars = 0;
+
+        // Stern-Picker
+        const picker = document.getElementById('star-picker');
+        if (picker) {
+          picker.querySelectorAll('span').forEach(star => {
+            star.addEventListener('mouseover', () => {
+              const v = +star.dataset.v;
+              picker.querySelectorAll('span').forEach(s => s.classList.toggle('active', +s.dataset.v <= v));
+            });
+            star.addEventListener('mouseleave', () => {
+              picker.querySelectorAll('span').forEach(s => s.classList.toggle('active', +s.dataset.v <= selectedStars));
+            });
+            star.addEventListener('click', () => {
+              selectedStars = +star.dataset.v;
+              picker.querySelectorAll('span').forEach(s => s.classList.toggle('active', +s.dataset.v <= selectedStars));
+            });
+          });
+        }
+
+        // Formular absenden
+        const form   = document.getElementById('review-form');
+        const msgEl  = document.getElementById('review-msg');
+        const btnEl  = document.getElementById('review-submit');
+        if (!form) return;
+
+        form.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          const name = document.getElementById('review-name').value.trim();
+          const text = document.getElementById('review-text').value.trim();
+
+          msgEl.className = 'review-form-msg';
+          msgEl.textContent = '';
+
+          if (!name)            { msgEl.className = 'review-form-msg error'; msgEl.textContent = 'Bitte gib deinen Namen ein.'; return; }
+          if (!selectedStars)   { msgEl.className = 'review-form-msg error'; msgEl.textContent = 'Bitte wähle eine Sterne-Bewertung.'; return; }
+          if (text.length < 10) { msgEl.className = 'review-form-msg error'; msgEl.textContent = 'Dein Kommentar ist zu kurz (min. 10 Zeichen).'; return; }
+
+          btnEl.disabled = true;
+          btnEl.textContent = 'Wird gesendet…';
+
+          try {
+            const res = await fetch(`${SUPABASE_URL}/rest/v1/rpc/submit_public_review`, {
+              method: 'POST',
+              headers: {
+                'apikey': SUPABASE_ANON,
+                'Authorization': `Bearer ${SUPABASE_ANON}`,
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({ p_name: name, p_stars: selectedStars, p_text: text }),
+            });
+
+            if (!res.ok) throw new Error('server error');
+
+            msgEl.className = 'review-form-msg success';
+            msgEl.textContent = '✓ Danke für deine Bewertung! Sie wird nach kurzer Prüfung veröffentlicht.';
+            form.reset();
+            selectedStars = 0;
+            if (picker) picker.querySelectorAll('span').forEach(s => s.classList.remove('active'));
+            btnEl.textContent = 'Bewertung abgeschickt ✓';
+          } catch (err) {
+            msgEl.className = 'review-form-msg error';
+            msgEl.textContent = 'Fehler beim Senden. Bitte versuche es später erneut.';
+            btnEl.disabled = false;
+            btnEl.textContent = 'Bewertung abschicken';
+          }
+        });
       })();
     </script>
   </body>
